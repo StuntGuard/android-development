@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_home">
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="id.project.stuntguard.view.home.HomeFragment"
+        android:label="@string/home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/navigation_analyze"
+        android:name="id.project.stuntguard.view.analyze.AnalyzeFragment"
+        android:label="@string/analyze"
+        tools:layout="@layout/fragment_analyze" />
+
+    <fragment
+        android:id="@+id/navigation_mission"
+        android:name="id.project.stuntguard.view.mission.MissionFragment"
+        android:label="@string/mission"
+        tools:layout="@layout/fragment_mission" />
+
+    <fragment
+        android:id="@+id/navigation_history"
+        android:name="id.project.stuntguard.view.history.HistoryFragment"
+        android:label="@string/history"
+        tools:layout="@layout/fragment_history" />
+</navigation>
