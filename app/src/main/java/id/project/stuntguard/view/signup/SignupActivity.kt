@@ -69,7 +69,7 @@ class SignupActivity : AppCompatActivity() {
                                 Toast.LENGTH_LONG
                             ).show()
                         } else {
-                            val intent = Intent(this@SignupActivity, SigninResponse::class.java)
+                            val intent = Intent(this@SignupActivity, SignupResponse::class.java)
                                 showLoading(false)
                             startActivity(intent)
                             finish()
