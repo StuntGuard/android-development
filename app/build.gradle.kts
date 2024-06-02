@@ -43,6 +43,9 @@ dependencies {
     // Card Slider :
     implementation("com.github.IslamKhSh:CardSlider:1.0.1")
 
+    // Paging 3 :
+    implementation("androidx.paging:paging-runtime-ktx:3.3.0")
+
     // Datastore :
     implementation("androidx.datastore:datastore-preferences:1.1.1")
 

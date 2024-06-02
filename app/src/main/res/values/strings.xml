@@ -23,7 +23,6 @@
     <string name="name">Name</string>
     <string name="profile_message">Child Growth</string>
     <string name="no_data_message">No Data</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="submit">Submit</string>
+    <string name="recommendation_title">Recommendation</string>
 </resources>
