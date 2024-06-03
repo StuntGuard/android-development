@@ -1,8 +1,7 @@
 package id.project.stuntguard.data.remote.api
 
-import id.project.stuntguard.data.remote.response.SigninResponse
-import id.project.stuntguard.data.remote.response.SignupResponse
-import retrofit2.Call
+import id.project.stuntguard.data.remote.response.SignInResponse
+import id.project.stuntguard.data.remote.response.SignUpResponse
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
@@ -10,16 +9,16 @@ import retrofit2.http.POST
 interface ApiService {
     @FormUrlEncoded
     @POST("sign-up")
-    fun signup(
+    suspend fun signUp(
         @Field("name") name: String,
         @Field("email") email: String,
         @Field("password") password: String
-    ): Call<SignupResponse>
+    ): SignUpResponse
 
     @FormUrlEncoded
     @POST("sign-in")
-    fun signin(
+    suspend fun signIn(
         @Field("email") email: String,
         @Field("password") password: String,
-    ): Call<SigninResponse>
+    ): SignInResponse
 }

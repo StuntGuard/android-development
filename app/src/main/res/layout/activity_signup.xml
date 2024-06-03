@@ -6,6 +6,19 @@
     android:layout_height="match_parent"
     tools:context=".view.signup.SignupActivity">
 
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="8dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible" />
+
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelineHorizontal"
         android:layout_width="wrap_content"
@@ -63,7 +76,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/login_image"
+        android:id="@+id/signup_image"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:src="@drawable/login_image"
@@ -80,7 +93,7 @@
         android:textSize="28sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@id/guidelineVertical2"
-        app:layout_constraintTop_toBottomOf="@id/login_image" />
+        app:layout_constraintTop_toBottomOf="@id/signup_image" />
 
     <TextView
         android:id="@+id/nameTextView"
@@ -89,6 +102,7 @@
         android:layout_marginTop="24dp"
         android:alpha="0"
         android:text="@string/name"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@id/guidelineVertical2"
         app:layout_constraintTop_toBottomOf="@+id/login_title"
         tools:alpha="100" />
@@ -99,18 +113,22 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:alpha="0"
-        android:background="@color/medium_grey"
         app:layout_constraintEnd_toEndOf="@id/guidelineVertical3"
         app:layout_constraintStart_toStartOf="@id/guidelineVertical2"
         app:layout_constraintTop_toBottomOf="@id/nameTextView"
+        app:startIconDrawable="@drawable/ic_person"
+        app:startIconTint="@color/white"
         tools:alpha="100">
 
-        <id.project.stuntguard.utils.component.EmailInputField
+        <id.project.stuntguard.utils.component.NameInputField
             android:id="@+id/nameEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/medium_grey"
             android:ems="10"
             android:inputType="text"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
             tools:ignore="SpeakableTextPresentCheck" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -122,6 +140,7 @@
         android:layout_marginTop="24dp"
         android:alpha="0"
         android:text="@string/email"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@id/guidelineVertical2"
         app:layout_constraintTop_toBottomOf="@+id/nameEditTextLayout"
         tools:alpha="100" />
@@ -132,18 +151,22 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:alpha="0"
-        android:background="@color/medium_grey"
         app:layout_constraintEnd_toEndOf="@id/guidelineVertical3"
         app:layout_constraintStart_toStartOf="@id/guidelineVertical2"
         app:layout_constraintTop_toBottomOf="@id/emailTextView"
+        app:startIconDrawable="@drawable/ic_email"
+        app:startIconTint="@color/white"
         tools:alpha="100">
 
         <id.project.stuntguard.utils.component.EmailInputField
             android:id="@+id/emailEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/medium_grey"
             android:ems="10"
-            android:inputType="textPassword"
+            android:inputType="textEmailAddress"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
             tools:ignore="SpeakableTextPresentCheck" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -155,6 +178,7 @@
         android:layout_marginTop="24dp"
         android:alpha="0"
         android:text="@string/password"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@id/guidelineVertical2"
         app:layout_constraintTop_toBottomOf="@+id/emailEditTextLayout"
         tools:alpha="100" />
@@ -165,18 +189,24 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:alpha="0"
-        android:background="@color/medium_grey"
+        app:endIconMode="password_toggle"
+        app:endIconTint="@color/white"
         app:layout_constraintEnd_toEndOf="@id/guidelineVertical3"
         app:layout_constraintStart_toStartOf="@id/guidelineVertical2"
         app:layout_constraintTop_toBottomOf="@id/passwordTextView"
+        app:startIconDrawable="@drawable/ic_lock"
+        app:startIconTint="@color/white"
         tools:alpha="100">
 
         <id.project.stuntguard.utils.component.PasswordInputField
             android:id="@+id/passwordEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/medium_grey"
             android:ems="10"
-            android:inputType="textEmailAddress"
+            android:inputType="textPassword"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
             tools:ignore="SpeakableTextPresentCheck" />
 
     </com.google.android.material.textfield.TextInputLayout>

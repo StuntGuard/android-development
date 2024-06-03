@@ -1,7 +1,22 @@
 package id.project.stuntguard.view.home
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
+import id.project.stuntguard.data.preferences.UserModel
+import id.project.stuntguard.data.repository.Repository
+import kotlinx.coroutines.launch
 
-class HomeViewModel : ViewModel() {
-    // TODO
+class HomeViewModel(private val repository: Repository) : ViewModel() {
+    // Preferences :
+    fun getSession(): LiveData<UserModel> {
+        return repository.getSession().asLiveData()
+    }
+
+    fun logout() {
+        viewModelScope.launch {
+            repository.logout()
+        }
+    }
 }

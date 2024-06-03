@@ -1,135 +1,145 @@
 package id.project.stuntguard.view.signup
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.os.Build
 import android.os.Bundle
-import android.util.Patterns
-import android.widget.Button
-import android.widget.Toast
-import id.project.stuntguard.R
-import id.project.stuntguard.data.remote.api.ApiConfig
-import id.project.stuntguard.data.remote.response.SigninResponse
-import id.project.stuntguard.data.remote.response.SignupResponse
+import android.view.View
+import android.view.WindowInsets
+import android.view.WindowManager
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import id.project.stuntguard.databinding.ActivitySignupBinding
-import id.project.stuntguard.utils.component.EmailInputField
-import id.project.stuntguard.utils.component.PasswordInputField
+import id.project.stuntguard.utils.component.CustomAlertDialog
+import id.project.stuntguard.utils.helper.ViewModelFactory
 import id.project.stuntguard.view.login.LoginActivity
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class SignupActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignupBinding
-
-    private lateinit var nameEditText: EmailInputField
-    private lateinit var emailEditText: EmailInputField
-    private lateinit var passwordEditText: PasswordInputField
-    private lateinit var registerButton: Button
+    private val viewModel by viewModels<SignupViewModel> {
+        ViewModelFactory.getInstance(this)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySignupBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        nameEditText = binding.nameEditText
-        emailEditText = binding.emailEditText
-        passwordEditText = binding.passwordEditText
-        registerButton = binding.signUpButton
+        setupView()
+        setupAction()
+        playAnimation()
+    }
 
-        setMyButtonEnable()
-        showLoading(false)
-
-        registerButton.setOnClickListener {
-            register(
-                nameEditText.text.toString(),
-                emailEditText.text.toString(),
-                passwordEditText.text.toString()
+    private fun setupView() {
+        @Suppress("DEPRECATION")
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            window.insetsController?.hide(WindowInsets.Type.statusBars())
+        } else {
+            window.setFlags(
+                WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN
             )
-            showLoading(true)
+        }
+        supportActionBar?.hide()
+    }
+
+    private fun setupAction() {
+        binding.signUpButton.setOnClickListener {
+            val name = binding.nameEditText.text.toString().trim()
+            val email = binding.emailEditText.text.toString().trim()
+            val password = binding.passwordEditText.text.toString().trim()
+
+            viewModel.signUp(name = name, email = email, password = password)
         }
 
         binding.signInClickable.setOnClickListener {
-            val intent = Intent(this@SignupActivity, LoginActivity::class.java)
-            startActivity(intent)
+            val intentToSignIn = Intent(this@SignupActivity, LoginActivity::class.java)
+            startActivity(intentToSignIn)
             finish()
         }
-    }
 
-    private fun register(name: String, email: String, password: String) {
-        val client = ApiConfig.getApiService().signup(name, email, password)
-        client.enqueue(object: Callback<SignupResponse> {
-            override fun onResponse(call: Call<SignupResponse>, response: Response<SignupResponse>) {
-                if (response.isSuccessful) {
-                    val signUpResponse = response.body()
-                    if (signUpResponse != null) {
-                        if (signUpResponse.status == "fail") {
-                            Toast.makeText(
-                                this@SignupActivity,
-                                signUpResponse.message,
-                                Toast.LENGTH_LONG
-                            ).show()
-                        } else {
-                            val intent = Intent(this@SignupActivity, SignupResponse::class.java)
-                                showLoading(false)
-                            startActivity(intent)
-                            finish()
-                        }
-                    }
-                }
+        viewModel.isLoading.observe(this) {
+            showLoading(it)
+        }
+
+        viewModel.signUpResponse.observe(this) { response ->
+            val customAlertDialog = CustomAlertDialog(this)
+            customAlertDialog.create(
+                title = "Success",
+                message = response.message
+            ) {
+                val intentToSignIn = Intent(this@SignupActivity, LoginActivity::class.java)
+                startActivity(intentToSignIn)
+                finish()
             }
+            customAlertDialog.show()
+        }
 
-            override fun onFailure(call: Call<SignupResponse>, t: Throwable) {
-                Toast.makeText(
-                    this@SignupActivity,
-                    "onFailure: ${t.message.toString()}",
-                    Toast.LENGTH_LONG
-                ).show()
+        viewModel.errorResponse.observe(this) { errorMessage ->
+            val customAlertDialog = CustomAlertDialog(this)
+            customAlertDialog.create(
+                title = "Invalid",
+                message = errorMessage.toString()
+            ) {
+                /*
+                    onPositiveButtonClick :
+                    ~ Do Nothing ~
+                */
             }
-
-        })
-    }
-
-    private fun setMyButtonEnable() {
-        val email = emailEditText.text
-        val password = passwordEditText.text
-        val name = nameEditText.text
-        registerButton.isEnabled = (email != null && email.toString()
-            .isNotEmpty()) && (password != null && password.toString()
-            .isNotEmpty()) && (name != null && name.toString().isNotEmpty())
-    }
-
-    private fun showLoading(state: Boolean) {
-//        binding.progressBar.visibility = if (state) View.VISIBLE else View.INVISIBLE
-    }
-
-    private fun validateName(): Boolean{
-        var error: String? = null
-        val value: String = binding.nameEditText.text.toString()
-        if (value.isEmpty()){
-            error = "Name is required"
+            customAlertDialog.show()
         }
-        return error == null
     }
 
-    private fun validateEmail(): Boolean{
-        var error: String? = null
-        val value = binding.emailEditText.text.toString()
-        if (value.isEmpty()){
-            error = "Email is required"
-        } else if (Patterns.EMAIL_ADDRESS.matcher(value).matches()) {
-            error = "Email address is invalid"
+    private fun playAnimation() {
+        ObjectAnimator.ofFloat(binding.signupImage, View.TRANSLATION_X, -30f, 30f).apply {
+            duration = 6000
+            repeatCount = ObjectAnimator.INFINITE
+            repeatMode = ObjectAnimator.REVERSE
+        }.start()
+
+        val title = ObjectAnimator.ofFloat(binding.loginTitle, View.ALPHA, 1f).setDuration(100)
+        val name = ObjectAnimator.ofFloat(binding.nameTextView, View.ALPHA, 1f).setDuration(100)
+        val nameInputField =
+            ObjectAnimator.ofFloat(binding.nameEditTextLayout, View.ALPHA, 1f).setDuration(100)
+        val email = ObjectAnimator.ofFloat(binding.emailTextView, View.ALPHA, 1f).setDuration(100)
+        val emailInputField =
+            ObjectAnimator.ofFloat(binding.emailEditTextLayout, View.ALPHA, 1f).setDuration(100)
+        val password =
+            ObjectAnimator.ofFloat(binding.passwordTextView, View.ALPHA, 1f).setDuration(100)
+        val passwordInputField =
+            ObjectAnimator.ofFloat(binding.passwordEditTextLayout, View.ALPHA, 1f).setDuration(100)
+        val signInButton =
+            ObjectAnimator.ofFloat(binding.signInClickable, View.ALPHA, 1f).setDuration(100)
+        val alreadyHaveAcc =
+            ObjectAnimator.ofFloat(binding.alreadyHaveAccount, View.ALPHA, 1f).setDuration(100)
+        val signUpButton =
+            ObjectAnimator.ofFloat(binding.signUpButton, View.ALPHA, 1f).setDuration(100)
+
+        val alreadyAndSignUpAnimation = AnimatorSet().apply {
+            playTogether(
+                alreadyHaveAcc,
+                signInButton
+            )
         }
-        return error == null
+
+        AnimatorSet().apply {
+            playSequentially(
+                title,
+                name,
+                nameInputField,
+                email,
+                emailInputField,
+                password,
+                passwordInputField,
+                signUpButton,
+                alreadyAndSignUpAnimation
+            )
+            startDelay = 100
+        }.start()
     }
 
-    private fun validatePassword(): Boolean {
-        var error: String? = null
-        val value = binding.passwordEditText.text.toString()
-        if (value.isEmpty()){
-            error = "Password is required"
-        } else if (value.length < 8) {
-            error = "Password must be 8 characters long"
-        }
-        return error == null
+    private fun showLoading(isLoading: Boolean) {
+        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 }
