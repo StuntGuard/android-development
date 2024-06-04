@@ -1,8 +1,10 @@
 package id.project.stuntguard.data.remote.api
 
+import id.project.stuntguard.data.preferences.MissionModel
 import id.project.stuntguard.data.remote.response.GetAllChildResponse
 import id.project.stuntguard.data.remote.response.GetPredictHistoryResponse
 import id.project.stuntguard.data.remote.response.GetPredictResultResponse
+import id.project.stuntguard.data.remote.response.MissionResponse
 import id.project.stuntguard.data.remote.response.PredictChildResponse
 import id.project.stuntguard.data.remote.response.SignInResponse
 import id.project.stuntguard.data.remote.response.SignUpResponse
@@ -71,4 +73,10 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Path("idChild") idChild: Int
     ): GetPredictHistoryResponse
+
+    @GET("missions/{idChild}")
+    suspend fun getMissions(
+        @Header("Authorization") token: String?,
+        @Path("idChild") idChild: Int
+    ): List<MissionModel>
 }

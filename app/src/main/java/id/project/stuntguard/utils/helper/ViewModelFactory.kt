@@ -10,6 +10,8 @@ import id.project.stuntguard.view.history.HistoryViewModel
 import id.project.stuntguard.view.home.HomeViewModel
 import id.project.stuntguard.view.login.LoginViewModel
 import id.project.stuntguard.view.main.MainViewModel
+import id.project.stuntguard.view.mission.MissionFragment
+import id.project.stuntguard.view.mission.MissionViewModel
 import id.project.stuntguard.view.signup.SignupViewModel
 
 class ViewModelFactory(private val repository: Repository) :
@@ -39,6 +41,10 @@ class ViewModelFactory(private val repository: Repository) :
 
             modelClass.isAssignableFrom(HistoryViewModel::class.java) -> {
                 HistoryViewModel(repository) as T
+            }
+
+            modelClass.isAssignableFrom(MissionViewModel::class.java) -> {
+                MissionViewModel(repository) as T
             }
 
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)

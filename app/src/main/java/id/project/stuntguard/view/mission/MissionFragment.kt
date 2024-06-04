@@ -6,11 +6,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import id.project.stuntguard.databinding.FragmentMissionBinding
+import id.project.stuntguard.utils.helper.ViewModelFactory
 
 class MissionFragment : Fragment() {
     private var _binding: FragmentMissionBinding? = null
     private val binding get() = _binding!!
+
+    private lateinit var missionViewModel: MissionViewModel
+    private val viewModel by viewModels<MissionViewModel> {
+        ViewModelFactory.getInstance(requireActivity())
+    }
+    private lateinit var missionAdapter: MissionAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -24,7 +33,18 @@ class MissionFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // TODO
+        missionViewModel = ViewModelProvider(this).get(MissionViewModel::class.java)
+        missionAdapter = MissionAdapter(emptyList())
+
+        binding.rvMission.adapter = missionAdapter
+
+        val authToken = arguments?.getString("homeToken")
+
+        missionViewModel.getMissions(authToken, 8)
+
+//        missionViewModel.missionList.observe(viewLifecycleOwner) { missions ->
+//            missionAdapter.submitList(missions)
+//        }
 
         binding.addMissionButton.setOnClickListener {
             Toast.makeText(requireActivity(), "Add Mission Clicked", Toast.LENGTH_SHORT).show()
