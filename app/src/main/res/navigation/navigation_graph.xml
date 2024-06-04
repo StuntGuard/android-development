@@ -2,30 +2,46 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/mobile_navigation"
+    android:id="@+id/navigation_graph"
     app:startDestination="@+id/navigation_home">
 
     <fragment
         android:id="@+id/navigation_home"
         android:name="id.project.stuntguard.view.home.HomeFragment"
         android:label="@string/home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home">
+        <argument
+            android:name="homeToken"
+            app:argType="string" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_analyze"
         android:name="id.project.stuntguard.view.analyze.AnalyzeFragment"
         android:label="@string/analyze"
-        tools:layout="@layout/fragment_analyze" />
+        tools:layout="@layout/fragment_analyze">
+        <argument
+            android:name="analyzeToken"
+            app:argType="string" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_mission"
         android:name="id.project.stuntguard.view.mission.MissionFragment"
         android:label="@string/mission"
-        tools:layout="@layout/fragment_mission" />
+        tools:layout="@layout/fragment_mission">
+        <argument
+            android:name="missionToken"
+            app:argType="string" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_history"
         android:name="id.project.stuntguard.view.history.HistoryFragment"
         android:label="@string/history"
-        tools:layout="@layout/fragment_history" />
+        tools:layout="@layout/fragment_history">
+        <argument
+            android:name="historyToken"
+            app:argType="string" />
+    </fragment>
 </navigation>

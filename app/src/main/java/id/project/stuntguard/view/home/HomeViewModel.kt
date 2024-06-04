@@ -10,10 +10,6 @@ import kotlinx.coroutines.launch
 
 class HomeViewModel(private val repository: Repository) : ViewModel() {
     // Preferences :
-    fun getSession(): LiveData<UserModel> {
-        return repository.getSession().asLiveData()
-    }
-
     fun logout() {
         viewModelScope.launch {
             repository.logout()

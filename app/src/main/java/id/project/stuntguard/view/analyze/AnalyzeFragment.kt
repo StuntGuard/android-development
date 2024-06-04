@@ -18,15 +18,18 @@ class AnalyzeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentAnalyzeBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val authToken = arguments?.getString("analyzeToken")
+
+        // TODO
 
         binding.addChildButton.setOnClickListener {
             Toast.makeText(requireActivity(), "Add Child Clicked", Toast.LENGTH_SHORT).show()
         }
-
-        // TODO
-
-        return root
     }
 
     override fun onDestroyView() {

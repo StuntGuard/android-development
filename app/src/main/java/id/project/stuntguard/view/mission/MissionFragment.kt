@@ -10,9 +10,6 @@ import id.project.stuntguard.databinding.FragmentMissionBinding
 
 class MissionFragment : Fragment() {
     private var _binding: FragmentMissionBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -21,15 +18,17 @@ class MissionFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentMissionBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // TODO
 
         binding.addMissionButton.setOnClickListener {
             Toast.makeText(requireActivity(), "Add Mission Clicked", Toast.LENGTH_SHORT).show()
         }
-
-        // TODO
-
-        return root
     }
 
     override fun onDestroyView() {

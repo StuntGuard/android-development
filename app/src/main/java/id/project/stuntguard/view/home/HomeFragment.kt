@@ -1,6 +1,5 @@
 package id.project.stuntguard.view.home
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import id.project.stuntguard.databinding.FragmentHomeBinding
 import id.project.stuntguard.utils.helper.ViewModelFactory
-import id.project.stuntguard.view.onboarding.OnboardingActivity
 
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
@@ -25,26 +23,35 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+        return binding.root
+    }
 
-        // Checking -> is user already login?? :
-        viewModel.getSession().observe(requireActivity()) { user ->
-            if (!user.isLogin) {
-                val intentToOnboarding = Intent(requireActivity(), OnboardingActivity::class.java)
-                startActivity(intentToOnboarding)
-            }
-        }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         setupAction()
 
-        // TODO
+        /*
+            Note ~ Fidel :
+            How to use the Authorization Token?
+
+            -> Uncomment this section to try it out :
+
+            // val authToken = arguments?.getString("homeToken")
+            // binding.seeAll.text = authToken
+
+            -> how to know the key of arguments? :
+            -> It provided on navigation_graph.xml, argument's key name is located on fragment > argument > name
+
+            -> How I know it work? :
+            -> The textView on "See All" that should be show text "See All" will change to "Bearer Ey5dfc45..." on right center of the screen
+        */
+
+        // TODO :
+
         binding.seeAll.setOnClickListener {
             Toast.makeText(requireActivity(), "See All clicked", Toast.LENGTH_SHORT).show()
         }
-
-        // TODO
-
-        return root
     }
 
     override fun onDestroyView() {

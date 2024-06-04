@@ -65,7 +65,7 @@ interface ApiService {
         @Path("idPredict") idPredict: Int
     ): GetPredictResultResponse
 
-    // History Section
+    // History Section :
     @GET("history/{idChild")
     suspend fun getPredictHistory(
         @Header("Authorization") token: String,
