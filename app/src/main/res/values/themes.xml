@@ -2,7 +2,7 @@
     <!-- Base application theme. -->
     <style name="Theme.StuntGuard" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/soft_yellow</item>
+        <item name="colorPrimary">#95B9A4</item>
         <item name="colorPrimaryVariant">@color/soft_yellow</item>
         <item name="colorOnPrimary">@color/soft_yellow</item>
         <!-- Secondary brand color. -->

@@ -41,6 +41,9 @@ android {
 }
 
 dependencies {
+    // ImagePicker(Camera and Gallery) :
+    implementation ("com.github.dhaval2404:imagepicker:2.1")
+
     // Card Slider :
     implementation("com.github.IslamKhSh:CardSlider:1.0.1")
 

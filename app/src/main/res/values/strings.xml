@@ -4,6 +4,11 @@
     <string name="history">History</string>
     <string name="analyze">Analyze</string>
     <string name="mission">Mission</string>
+    
+    <string-array name="gender">
+        <item>laki-laki</item>
+        <item>perempuan</item>
+    </string-array>
 
     <string name="app_motto">Guard Children Nutrition</string>
     <string name="onboarding_title">Prevent Stunting\nOptomize Child Growth</string>

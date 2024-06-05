@@ -1,5 +1,6 @@
 package id.project.stuntguard.view.analyze
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -23,17 +24,21 @@ class AnalyzeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val authToken = arguments?.getString("analyzeToken")
+        val authToken = arguments?.getString("analyzeToken").toString()
 
-        // TODO
-
-        binding.addChildButton.setOnClickListener {
-            Toast.makeText(requireActivity(), "Add Child Clicked", Toast.LENGTH_SHORT).show()
-        }
+        setupAction(authToken)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun setupAction(authToken: String) {
+        binding.addChildButton.setOnClickListener {
+            val intentToAddChild = Intent(requireActivity(), AddChildActivity::class.java)
+            intentToAddChild.putExtra(AddChildActivity.EXTRA_TOKEN, authToken)
+            startActivity(intentToAddChild)
+        }
     }
 }
