@@ -9,7 +9,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
+
         <ProgressBar
             android:id="@+id/progress_bar"
             style="?android:attr/progressBarStyle"
@@ -91,11 +92,11 @@
             android:id="@+id/title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:gravity="center_vertical"
             android:text="Add Child"
             android:textSize="24sp"
             android:textStyle="bold"
-            android:layout_marginTop="16dp"
             app:layout_constraintBottom_toTopOf="@id/guidelineHorizontal"
             app:layout_constraintEnd_toEndOf="@id/guidelineVertical3"
             app:layout_constraintStart_toStartOf="@id/guidelineVertical2"
@@ -120,14 +121,14 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:alpha="100"
-            app:startIconDrawable="@drawable/ic_person"
-            app:startIconTint="@color/white"
             app:layout_constraintEnd_toEndOf="@id/guidelineVertical3"
             app:layout_constraintStart_toStartOf="@id/guidelineVertical"
             app:layout_constraintTop_toBottomOf="@id/child_name_textview"
+            app:startIconDrawable="@drawable/ic_person"
+            app:startIconTint="@color/white"
             tools:alpha="100">
 
-            <id.project.stuntguard.utils.component.NameInputField
+            <id.project.stuntguard.utils.component.CustomInputField
                 android:id="@+id/childNameEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -136,6 +137,8 @@
                 android:inputType="text"
                 android:textColor="@color/white"
                 android:textColorHint="@color/white"
+                app:customErrorMessage="Child Name cannot be empty"
+                app:customHint="Your Child Name"
                 tools:ignore="SpeakableTextPresentCheck" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -158,11 +161,11 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:alpha="100"
-            app:startIconDrawable="@drawable/ic_bubble"
-            app:startIconTint="@color/white"
             app:layout_constraintEnd_toEndOf="@id/guidelineVertical3"
             app:layout_constraintStart_toStartOf="@id/guidelineVertical"
             app:layout_constraintTop_toBottomOf="@id/child_age_textview"
+            app:startIconDrawable="@drawable/ic_bubble"
+            app:startIconTint="@color/white"
             tools:alpha="100">
 
             <AutoCompleteTextView

@@ -1,4 +1,6 @@
-package id.project.stuntguard.data.preferences
+package id.project.stuntguard.data.model
+
+import id.project.stuntguard.data.preferences.UserModel
 
 data class MissionModel(
     val id: Int,

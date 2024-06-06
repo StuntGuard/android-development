@@ -23,7 +23,7 @@ data class Data(
 	val createdAt: String,
 
 	@field:SerializedName("reccomendations")
-	val reccomendations: List<ReccomendationsItem>,
+	val recommendations: List<RecommendationsItem>,
 
 	@field:SerializedName("subtitle")
 	val subtitle: String,
@@ -38,7 +38,7 @@ data class Data(
 	val message: String
 )
 
-data class ReccomendationsItem(
+data class RecommendationsItem(
 
 	@field:SerializedName("assignedToPredict")
 	val assignedToPredict: Int,

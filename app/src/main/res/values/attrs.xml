@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Custom Additional View's Parameter -->
+    <declare-styleable name="CustomInputField">
+        <attr name="customHint" format="string" />
+        <attr name="customErrorMessage" format="string" />
+    </declare-styleable>
+</resources>

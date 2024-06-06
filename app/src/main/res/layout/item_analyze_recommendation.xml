@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="32dp"
+    android:layout_margin="8dp"
     android:backgroundTint="@color/medium_grey"
     android:padding="18dp"
     app:cardCornerRadius="16dp"
@@ -23,12 +23,13 @@
             android:textSize="18sp"
             android:textStyle="bold"
             android:layout_height="wrap_content"
-            tools:text="1. " />
+            tools:text="1." />
 
         <TextView
             android:id="@+id/recommendation_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toEndOf="@id/recommendation_index"
             android:textSize="18sp"

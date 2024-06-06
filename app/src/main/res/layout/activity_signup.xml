@@ -120,7 +120,7 @@
         app:startIconTint="@color/white"
         tools:alpha="100">
 
-        <id.project.stuntguard.utils.component.NameInputField
+        <id.project.stuntguard.utils.component.CustomInputField
             android:id="@+id/nameEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -129,6 +129,8 @@
             android:inputType="text"
             android:textColor="@color/white"
             android:textColorHint="@color/white"
+            app:customErrorMessage="Name cannot be empty"
+            app:customHint="Your Name"
             tools:ignore="SpeakableTextPresentCheck" />
 
     </com.google.android.material.textfield.TextInputLayout>

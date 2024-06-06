@@ -14,8 +14,6 @@
     <string name="onboarding_title">Prevent Stunting\nOptomize Child Growth</string>
     <string name="onboarding_message">Monitor your child\'s development and get early stunting prevention solutions.</string>
     <string name="continue_with_email">Continue with Email</string>
-    <string name="name_hint">Your Name</string>
-    <string name="name_error_message">Name cannot be Empty</string>
     <string name="email_hint">Your Email</string>
     <string name="email_error_message">Invalid Email Address</string>
     <string name="password_hint">Your Password</string>

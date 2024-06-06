@@ -1,10 +1,9 @@
 package id.project.stuntguard.data.remote.api
 
-import id.project.stuntguard.data.preferences.MissionModel
+import id.project.stuntguard.data.model.MissionModel
 import id.project.stuntguard.data.remote.response.GetAllChildResponse
 import id.project.stuntguard.data.remote.response.GetPredictHistoryResponse
 import id.project.stuntguard.data.remote.response.GetPredictResultResponse
-import id.project.stuntguard.data.remote.response.MissionResponse
 import id.project.stuntguard.data.remote.response.PredictChildResponse
 import id.project.stuntguard.data.remote.response.SignInResponse
 import id.project.stuntguard.data.remote.response.SignUpResponse
@@ -52,7 +51,7 @@ interface ApiService {
     ): SignUpResponse
 
     @FormUrlEncoded
-    @POST("predict/{idChild}")
+    @POST("predicts/{idChild}")
     suspend fun predict(
         @Header("Authorization") token: String,
         @Path("idChild") idChild: Int,
@@ -68,12 +67,13 @@ interface ApiService {
     ): GetPredictResultResponse
 
     // History Section :
-    @GET("history/{idChild")
+    @GET("history/{idChild}")
     suspend fun getPredictHistory(
         @Header("Authorization") token: String,
         @Path("idChild") idChild: Int
     ): GetPredictHistoryResponse
 
+    // Mission Section :
     @GET("missions/{idChild}")
     suspend fun getMissions(
         @Header("Authorization") token: String?,

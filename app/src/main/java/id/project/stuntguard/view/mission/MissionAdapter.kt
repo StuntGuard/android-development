@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import id.project.stuntguard.R
-import id.project.stuntguard.data.preferences.MissionModel
+import id.project.stuntguard.data.model.MissionModel
 
 class MissionAdapter(private val missionList: List<MissionModel>) :
     RecyclerView.Adapter<MissionAdapter.MissionViewHolder>() {

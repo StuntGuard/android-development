@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import id.project.stuntguard.data.preferences.MissionModel
+import id.project.stuntguard.data.model.MissionModel
 import id.project.stuntguard.data.repository.Repository
 import kotlinx.coroutines.launch
 

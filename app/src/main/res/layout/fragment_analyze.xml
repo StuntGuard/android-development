@@ -97,7 +97,9 @@
             android:layout_height="match_parent"
             android:background="@color/medium_grey"
             android:inputType="none"
-            android:padding="8dp" />
+            android:padding="16dp"
+            android:text="Choose Child"
+            android:textColor="@color/white" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -122,14 +124,21 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/child_age_textview"
+        app:startIconDrawable="@drawable/ic_123"
+        app:startIconTint="@color/white"
         tools:alpha="100">
 
-        <com.google.android.material.textfield.TextInputEditText
+        <id.project.stuntguard.utils.component.CustomInputField
+            android:id="@+id/child_age_editText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/medium_grey"
             android:inputType="number"
             android:padding="16dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            app:customErrorMessage="Child Age cannot be empty"
+            app:customHint="Your Child Age"
             tools:text="Your Age" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -155,14 +164,21 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/child_height_textview"
+        app:startIconDrawable="@drawable/ic_height"
+        app:startIconTint="@color/white"
         tools:alpha="100">
 
-        <com.google.android.material.textfield.TextInputEditText
+        <id.project.stuntguard.utils.component.CustomInputField
+            android:id="@+id/child_height_editText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/medium_grey"
             android:inputType="number"
             android:padding="16dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            app:customErrorMessage="Child Height cannot be empty"
+            app:customHint="Your Child Height"
             tools:text="Your Height" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -172,8 +188,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="36dp"
-        android:text="@string/analyze"
         android:backgroundTint="@color/soft_yellow"
+        android:text="@string/analyze"
         android:textColor="@color/black"
         app:layout_constraintTop_toBottomOf="@id/child_height_edit_textLayout" />
 

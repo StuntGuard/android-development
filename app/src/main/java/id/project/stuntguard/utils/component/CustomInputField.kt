@@ -9,10 +9,28 @@ import android.view.View
 import androidx.appcompat.widget.AppCompatEditText
 import id.project.stuntguard.R
 
-class NameInputField @JvmOverloads constructor(
+class CustomInputField @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
 ) : AppCompatEditText(context, attrs) {
+    private var customHint: String? = null
+    private var customErrorMessage: String? = null
+
     init {
+        // to apply custom hint and message that declared from xml code
+        context.theme.obtainStyledAttributes(
+            attrs,
+            R.styleable.CustomInputField,
+            0,
+            0
+        ).apply {
+            try {
+                customHint = getString(R.styleable.CustomInputField_customHint)
+                customErrorMessage = getString(R.styleable.CustomInputField_customErrorMessage)
+            } finally {
+                recycle()
+            }
+        }
+
         addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
                 // Do Nothing
@@ -24,7 +42,7 @@ class NameInputField @JvmOverloads constructor(
 
             override fun afterTextChanged(s: Editable) {
                 if (s.toString().isEmpty()) {
-                    setError(context.getString(R.string.name_error_message), null)
+                    setError(customErrorMessage, null)
                 } else {
                     error = null
                 }
@@ -34,7 +52,7 @@ class NameInputField @JvmOverloads constructor(
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        hint = context.getString(R.string.name_hint)
+        hint = customHint
         textAlignment = View.TEXT_ALIGNMENT_VIEW_START
     }
 }
