@@ -15,8 +15,8 @@ class MissionFragment : Fragment() {
     private var _binding: FragmentMissionBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var missionViewModel: MissionViewModel
-    private val viewModel by viewModels<MissionViewModel> {
+//    private lateinit var missionViewModel: MissionViewModel
+    private val missionViewModel by viewModels<MissionViewModel> {
         ViewModelFactory.getInstance(requireActivity())
     }
     private lateinit var missionAdapter: MissionAdapter
@@ -33,7 +33,7 @@ class MissionFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        missionViewModel = ViewModelProvider(this).get(MissionViewModel::class.java)
+//        missionViewModel = ViewModelProvider(this).get(MissionViewModel::class.java)
         missionAdapter = MissionAdapter(emptyList())
 
         binding.rvMission.adapter = missionAdapter
