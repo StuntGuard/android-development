@@ -45,6 +45,10 @@ class Repository private constructor(
         return apiService.getAllChild(token = authToken)
     }
 
+    suspend fun deleteChild(authToken: String, idChild: Int): SignUpResponse {
+        return apiService.deleteChild(token = authToken, idChild = idChild)
+    }
+
     suspend fun addNewChild(
         authToken: String,
         name: RequestBody,

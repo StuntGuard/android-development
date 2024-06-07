@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.gson.Gson
 import id.project.stuntguard.data.remote.response.GetAllChildResponse
 import id.project.stuntguard.data.remote.response.GetChildPredictHistoryResponse
 import id.project.stuntguard.data.repository.Repository
@@ -16,7 +17,8 @@ class HistoryViewModel(private val repository: Repository) : ViewModel() {
     val getAllChildResponse: LiveData<GetAllChildResponse> = _getAllChildResponse
 
     private val _getChildPredictHistoryResponse = MutableLiveData<GetChildPredictHistoryResponse>()
-    val getChildPredictHistoryResponse: LiveData<GetChildPredictHistoryResponse> = _getChildPredictHistoryResponse
+    val getChildPredictHistoryResponse: LiveData<GetChildPredictHistoryResponse> =
+        _getChildPredictHistoryResponse
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
@@ -29,9 +31,36 @@ class HistoryViewModel(private val repository: Repository) : ViewModel() {
                 _getAllChildResponse.value = response
 
             } catch (e: HttpException) {
-                Log.e(TAG, "onFailure: ${e.message()}")
+                /*
+                    Response will always be success :
+                    {
+                        "status": "Success"
+                        "message": "data fetched"
+                        "data": []
+                    }
+                */
+            }
+            _isLoading.value = false
+        }
+    }
 
-                // TODO
+    fun deleteChild(authToken: String, idChild: Int) {
+        viewModelScope.launch {
+            _isLoading.value = true
+            try {
+                val response = repository.deleteChild(authToken = authToken, idChild = idChild)
+
+                // to update List of child after delete operation get executed :
+                _getAllChildResponse.value = repository.getAllChild(authToken = authToken)
+
+            } catch (e: HttpException) {
+                /*
+                    Response will always be success :
+                    {
+                        "status": "Success"
+                        "message": "Child Deleted"
+                    }
+                */
             }
             _isLoading.value = false
         }
@@ -41,13 +70,16 @@ class HistoryViewModel(private val repository: Repository) : ViewModel() {
         viewModelScope.launch {
             _isLoading.value = true
             try {
-                val response = repository.getPredictHistory(authToken = authToken, idChild = idChild)
+                val response =
+                    repository.getPredictHistory(authToken = authToken, idChild = idChild)
                 _getChildPredictHistoryResponse.value = response
 
             } catch (e: HttpException) {
                 Log.e(TAG, "onFailure: ${e.message()}")
-
-                // TODO
+                val jsonInString = e.response()?.errorBody()?.string()
+                val errorBody =
+                    Gson().fromJson(jsonInString, GetChildPredictHistoryResponse::class.java)
+                _getChildPredictHistoryResponse.value = errorBody
             }
             _isLoading.value = false
         }

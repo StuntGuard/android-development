@@ -10,6 +10,7 @@ import id.project.stuntguard.data.remote.response.SignInResponse
 import id.project.stuntguard.data.remote.response.SignUpResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import retrofit2.http.DELETE
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
@@ -39,6 +40,13 @@ interface ApiService {
     suspend fun getAllChild(
         @Header("Authorization") token: String
     ): GetAllChildResponse
+
+    // Return response is using SignUpResponse cause it return same value as DeleteChildResponse
+    @DELETE("childs/{idChild}")
+    suspend fun deleteChild(
+        @Header("Authorization") token: String,
+        @Path("idChild") idChild: Int
+    ): SignUpResponse
 
     // Analyze Section :
     // Return response is using SignUpResponse cause it return same value as AddNewChildResponse

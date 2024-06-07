@@ -31,7 +31,7 @@ class ChildListAdapter : ListAdapter<DataChild, ChildListAdapter.ListViewHolder>
                 onClickCallback.onItemClicked(dataChild.id, dataChild.name)
             }
             binding.delete.setOnClickListener {
-                onClickCallback.onDeleteClicked("Delete Icon Clicked")
+                onClickCallback.onDeleteClicked(dataChild.id)
             }
         }
     }
@@ -56,7 +56,7 @@ class ChildListAdapter : ListAdapter<DataChild, ChildListAdapter.ListViewHolder>
 
     interface OnClickCallback {
         fun onItemClicked(idChild: Int, childName: String)
-        fun onDeleteClicked(message: String)
+        fun onDeleteClicked(idChild: Int)
     }
 
     companion object {
