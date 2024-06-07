@@ -1,6 +1,7 @@
 package id.project.stuntguard.data.remote.api
 
 import id.project.stuntguard.data.model.MissionModel
+import id.project.stuntguard.data.remote.response.AddMissionResponse
 import id.project.stuntguard.data.remote.response.GetAllChildResponse
 import id.project.stuntguard.data.remote.response.GetChildPredictHistoryResponse
 import id.project.stuntguard.data.remote.response.GetPredictResultResponse
@@ -79,4 +80,12 @@ interface ApiService {
         @Header("Authorization") token: String?,
         @Path("idChild") idChild: Int
     ): List<MissionModel>
+
+    @FormUrlEncoded
+    @POST("missions/8")
+    suspend fun postMission(
+        @Header("Authorization") token: String,
+        @Field("title") title: String,
+        @Field("description") description: String,
+    ): AddMissionResponse
 }

@@ -109,7 +109,7 @@
         tools:alpha="100">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/child_name"
+            android:id="@+id/et_mission_title"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/medium_grey"
@@ -141,6 +141,7 @@
         tools:alpha="100">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_mission_desc"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/medium_grey"
@@ -150,7 +151,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
-        android:id="@+id/analyze_button"
+        android:id="@+id/btn_submit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="36dp"

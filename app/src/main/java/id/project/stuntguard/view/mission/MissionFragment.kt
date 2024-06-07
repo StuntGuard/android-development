@@ -1,5 +1,6 @@
 package id.project.stuntguard.view.mission
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,8 +16,8 @@ class MissionFragment : Fragment() {
     private var _binding: FragmentMissionBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var missionViewModel: MissionViewModel
-    private val viewModel by viewModels<MissionViewModel> {
+//    private lateinit var missionViewModel: MissionViewModel
+    private val missionViewModel by viewModels<MissionViewModel> {
         ViewModelFactory.getInstance(requireActivity())
     }
     private lateinit var missionAdapter: MissionAdapter
@@ -33,7 +34,7 @@ class MissionFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        missionViewModel = ViewModelProvider(this).get(MissionViewModel::class.java)
+//        missionViewModel = ViewModelProvider(this).get(MissionViewModel::class.java)
         missionAdapter = MissionAdapter(emptyList())
 
         binding.rvMission.adapter = missionAdapter
@@ -47,7 +48,9 @@ class MissionFragment : Fragment() {
 //        }
 
         binding.addMissionButton.setOnClickListener {
-            Toast.makeText(requireActivity(), "Add Mission Clicked", Toast.LENGTH_SHORT).show()
+            val context = requireActivity()
+            val addMissionActivity = Intent(context, AddMissionActivity::class.java)
+            startActivity(addMissionActivity)
         }
     }
 

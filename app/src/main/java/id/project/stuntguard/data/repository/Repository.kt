@@ -4,6 +4,7 @@ import id.project.stuntguard.data.model.MissionModel
 import id.project.stuntguard.data.preferences.UserModel
 import id.project.stuntguard.data.preferences.UserPreferences
 import id.project.stuntguard.data.remote.api.ApiService
+import id.project.stuntguard.data.remote.response.AddMissionResponse
 import id.project.stuntguard.data.remote.response.GetAllChildResponse
 import id.project.stuntguard.data.remote.response.GetChildPredictHistoryResponse
 import id.project.stuntguard.data.remote.response.GetPredictResultResponse
@@ -84,6 +85,18 @@ class Repository private constructor(
 
     suspend fun getMissions(authToken: String?, idChild: Int): List<MissionModel> {
         return apiService.getMissions(token = authToken, idChild = idChild)
+    }
+
+    suspend fun postMission(
+        authToken: String,
+        title: String,
+        description: String,
+    ): AddMissionResponse {
+        return apiService.postMission(
+            token = authToken,
+            title = title,
+            description = description,
+        )
     }
 
     companion object {
