@@ -1,5 +1,6 @@
 package id.project.stuntguard.view.mission
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -47,7 +48,9 @@ class MissionFragment : Fragment() {
 //        }
 
         binding.addMissionButton.setOnClickListener {
-            Toast.makeText(requireActivity(), "Add Mission Clicked", Toast.LENGTH_SHORT).show()
+            val context = requireActivity()
+            val addMissionActivity = Intent(context, AddMissionActivity::class.java)
+            startActivity(addMissionActivity)
         }
     }
 
