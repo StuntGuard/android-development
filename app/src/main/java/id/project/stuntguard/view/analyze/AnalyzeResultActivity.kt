@@ -2,7 +2,7 @@ package id.project.stuntguard.view.analyze
 
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
+import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.activity.viewModels
@@ -14,6 +14,7 @@ import id.project.stuntguard.databinding.ActivityAnalyzeResultBinding
 import id.project.stuntguard.utils.adapters.analyze.RecommendationsListAdapter
 import id.project.stuntguard.utils.helper.ViewModelFactory
 import id.project.stuntguard.utils.helper.formatDigit
+import id.project.stuntguard.utils.helper.setResultTextColor
 
 class AnalyzeResultActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAnalyzeResultBinding
@@ -31,6 +32,10 @@ class AnalyzeResultActivity : AppCompatActivity() {
 
         // to get Predict Result using idPredict :
         viewModel.getPredictResult(authToken = authToken, idPredict = idPredict)
+
+        viewModel.isLoading.observe(this@AnalyzeResultActivity) {
+            showLoading(it)
+        }
 
         setupView()
         setupAction()
@@ -77,12 +82,30 @@ class AnalyzeResultActivity : AppCompatActivity() {
             analyzeSubPrediction.text = data.subtitle
             analyzeMessage.text = data.message
 
+            analyzePrediction.setTextColor(
+                setResultTextColor(
+                    context = this@AnalyzeResultActivity,
+                    data.prediction
+                )[0]
+            )
+
+            analyzeSubPrediction.setTextColor(
+                setResultTextColor(
+                    context = this@AnalyzeResultActivity,
+                    data.prediction
+                )[1]
+            )
+
             // set the RecyclerView for list of Recommendations :
             val adapter = RecommendationsListAdapter()
             adapter.submitList(data.recommendations)
             rvAnalyzeRecommendation.layoutManager = LinearLayoutManager(this@AnalyzeResultActivity)
             rvAnalyzeRecommendation.adapter = adapter
         }
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
     companion object {

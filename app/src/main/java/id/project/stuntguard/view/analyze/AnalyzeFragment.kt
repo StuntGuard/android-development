@@ -43,6 +43,10 @@ class AnalyzeFragment : Fragment() {
             setupChildList(response)
         }
 
+        viewModel.isLoading.observe(viewLifecycleOwner) {
+            showLoading(it)
+        }
+
         setupAction(authToken)
     }
 
@@ -143,5 +147,9 @@ class AnalyzeFragment : Fragment() {
             childAgeEditText.text = null
             childHeightEditText.text = null
         }
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 }

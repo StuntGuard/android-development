@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="16dp"
+    android:layout_margin="12dp"
     tools:context=".view.analyze.AnalyzeFragment">
 
     <ProgressBar
@@ -24,24 +24,17 @@
         android:id="@+id/no_data_message"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:visibility="gone"
         android:gravity="center"
         android:text="@string/no_data_message"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="@id/rv_history" />
+        app:layout_constraintTop_toTopOf="@id/rv_history"
+        tools:visibility="visible" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelineVertical"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintGuide_percent="0.5"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guidelineVertical2"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:orientation="vertical"
@@ -53,7 +46,7 @@
         android:id="@+id/title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="History"
+        android:text="Your Child History"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@id/guidelineVertical"

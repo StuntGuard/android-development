@@ -4,7 +4,7 @@
     <string name="history">History</string>
     <string name="analyze">Analyze</string>
     <string name="mission">Mission</string>
-    
+
     <string-array name="gender">
         <item>laki-laki</item>
         <item>perempuan</item>

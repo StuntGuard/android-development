@@ -2,7 +2,7 @@ package id.project.stuntguard.data.remote.response
 
 import com.google.gson.annotations.SerializedName
 
-data class GetPredictHistoryResponse(
+data class GetChildPredictHistoryResponse(
 
 	@field:SerializedName("data")
 	val data: List<DataHistory>,

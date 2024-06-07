@@ -25,8 +25,10 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:gravity="center"
+        android:visibility="gone"
         android:text="@string/no_data_message"
         android:textSize="20sp"
+        tools:visibility="visible"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="@id/rv_detail_history" />
@@ -66,20 +68,19 @@
         app:layout_constraintBottom_toTopOf="@id/guidelineHorizontal"
         app:layout_constraintEnd_toEndOf="@id/guidelineVertical"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@id/title" />
 
     <TextView
         android:id="@+id/title"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:text="User's History"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/guidelineHorizontal"
         app:layout_constraintEnd_toEndOf="@id/guidelineVertical2"
         app:layout_constraintStart_toStartOf="@id/guidelineVertical"
-        app:layout_constraintTop_toTopOf="parent" />
+        tools:text="User's History" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_detail_history"

@@ -1,7 +1,10 @@
 package id.project.stuntguard.utils.helper
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Color
 import android.net.Uri
+import id.project.stuntguard.R
 import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
@@ -36,3 +39,35 @@ fun uriToFile(imageUri: Uri, context: Context): File {
 
 // to make double value have specific decimal number :
 fun Double.formatDigit(digit: Int) = "%.${digit}f".format(this)
+
+// to format Date :
+@SuppressLint("SimpleDateFormat")
+fun formatDate(inputDate: String): String {
+    val dateAPIFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(inputDate) as Date
+    val formattedDate = SimpleDateFormat("dd/MMM/yyyy").format(dateAPIFormat)
+
+    return formattedDate.toString()
+}
+
+// to set ResultTextColor :
+/*
+    -> Short Documentation :
+    TextView.setTextColor(setResultTextColor(context, ResultPrediction)[0])
+
+    index 0 -> The Prediction (Stunted, etc)
+    index 1 -> The Sub Prediction (Optimal Growth, etc)
+*/
+fun setResultTextColor(context: Context, resultPrediction: String): ArrayList<Int> {
+    val predictionColor = arrayListOf<Int>()
+
+   predictionColor.apply {
+       if (resultPrediction == "Stunted" || resultPrediction == "Severely Stunted") {
+           add(context.resources.getColor(R.color.soft_red, null))
+           add(context.resources.getColor(R.color.orange, null))
+       } else {
+           add(context.resources.getColor(R.color.soft_green, null))
+           add(context.resources.getColor(R.color.soft_yellow, null))
+       }
+   }
+    return predictionColor
+}

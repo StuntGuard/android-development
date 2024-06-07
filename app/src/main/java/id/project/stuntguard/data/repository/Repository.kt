@@ -5,7 +5,7 @@ import id.project.stuntguard.data.preferences.UserModel
 import id.project.stuntguard.data.preferences.UserPreferences
 import id.project.stuntguard.data.remote.api.ApiService
 import id.project.stuntguard.data.remote.response.GetAllChildResponse
-import id.project.stuntguard.data.remote.response.GetPredictHistoryResponse
+import id.project.stuntguard.data.remote.response.GetChildPredictHistoryResponse
 import id.project.stuntguard.data.remote.response.GetPredictResultResponse
 import id.project.stuntguard.data.remote.response.PredictChildResponse
 import id.project.stuntguard.data.remote.response.SignInResponse
@@ -78,12 +78,12 @@ class Repository private constructor(
         return apiService.getPredictResult(token = authToken, idPredict = idPredict)
     }
 
-    suspend fun getPredictHistory(authToken: String, idChild: Int): GetPredictHistoryResponse {
+    suspend fun getPredictHistory(authToken: String, idChild: Int): GetChildPredictHistoryResponse {
         return apiService.getPredictHistory(token = authToken, idChild = idChild)
     }
 
     suspend fun getMissions(authToken: String?, idChild: Int): List<MissionModel> {
-       return apiService.getMissions(token = authToken, idChild = idChild)
+        return apiService.getMissions(token = authToken, idChild = idChild)
     }
 
     companion object {
