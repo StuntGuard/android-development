@@ -34,7 +34,8 @@ class MissionFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val authToken = arguments?.getString("missionToken").toString()
 
-        viewModel.getMissions(authToken = authToken, 27)
+//        Still don't know how to get this idChild
+        viewModel.getMissions(authToken = authToken, idChild = 27)
 
         setupView(authToken = authToken)
     }
