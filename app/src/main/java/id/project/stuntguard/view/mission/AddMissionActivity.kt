@@ -70,7 +70,7 @@ class AddMissionActivity : AppCompatActivity() {
 //        val requestBodyTitle = title.toRequestBody("text/plain".toMediaType())
 //        val requestBodyDescription = description.toRequestBody("text/plain".toMediaType())
 
-        viewModel.postMission(title,description)
+//        viewModel.postMissions(title,description)
     }
 
     companion object {

@@ -96,7 +96,7 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Field("title") title: String,
         @Field("description") description: String,
-    ): MissionResponse
+    ): SignUpResponse
 
     @DELETE("missions/{idMission}")
     suspend fun deleteMissions(

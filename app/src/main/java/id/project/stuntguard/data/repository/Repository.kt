@@ -100,7 +100,7 @@ class Repository private constructor(
         authToken: String,
         title: String,
         description: String,
-    ): MissionResponse {
+    ): SignUpResponse {
         return apiService.postMission(
             token = authToken,
             title = title,
