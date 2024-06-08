@@ -11,7 +11,7 @@ data class MissionResponse (
     val status: String,
 
     @field:SerializedName("data")
-    val data: DataMission
+    val data: List<DataMission>
 )
 
 data class DataMission (
@@ -25,8 +25,14 @@ data class DataMission (
     val description: String,
 
     @field:SerializedName("assignedToUser")
-    val assignedToUserModel: UserModel,
+    val assignedToUser: Int,
 
     @field:SerializedName("assignedToChild")
-    val assignedToChild: DataChild
+    val assignedToChild: Int,
+
+    @field:SerializedName("createdAt")
+    val createdAt: String,
+
+    @field:SerializedName("updatedAt")
+    val updatedAt: String
 )

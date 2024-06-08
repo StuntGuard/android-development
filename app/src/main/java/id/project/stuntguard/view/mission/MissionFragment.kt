@@ -5,22 +5,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import id.project.stuntguard.databinding.FragmentMissionBinding
 import id.project.stuntguard.utils.helper.ViewModelFactory
 
 class MissionFragment : Fragment() {
     private var _binding: FragmentMissionBinding? = null
     private val binding get() = _binding!!
-
-//    private lateinit var missionViewModel: MissionViewModel
-    private val missionViewModel by viewModels<MissionViewModel> {
+    private val viewModel by viewModels<MissionViewModel> {
         ViewModelFactory.getInstance(requireActivity())
     }
-    private lateinit var missionAdapter: MissionAdapter
+    private lateinit var adapter: MissionAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,15 +29,14 @@ class MissionFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val authToken = arguments?.getString("missionToken").toString()
 
-//        missionViewModel = ViewModelProvider(this).get(MissionViewModel::class.java)
-        missionAdapter = MissionAdapter(emptyList())
+        viewModel.getMissions(authToken = authToken, 8)
 
-        binding.rvMission.adapter = missionAdapter
+//        SetupView
+        val adapter = MissionAdapter()
 
-        val authToken = arguments?.getString("homeToken")
-
-        missionViewModel.getMissions(authToken, 8)
+        binding.rvMission.adapter = adapter
 
 //        missionViewModel.missionList.observe(viewLifecycleOwner) { missions ->
 //            missionAdapter.submitList(missions)

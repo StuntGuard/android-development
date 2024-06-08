@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import id.project.stuntguard.data.model.MissionModel
+import id.project.stuntguard.data.remote.response.MissionResponse
 import id.project.stuntguard.data.repository.Repository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -14,8 +15,8 @@ import retrofit2.HttpException
 
 class MissionViewModel(private val repository: Repository) : ViewModel() {
 
-    private val _missionList = MutableLiveData<List<MissionModel>>()
-    val missionList: LiveData<List<MissionModel>> = _missionList
+    private val _getMissionResponse = MutableLiveData<MissionResponse>()
+    val getMissionResponse: LiveData<MissionResponse> = _getMissionResponse
 
     fun getMissions(authToken: String?, missionId: Int) {
         viewModelScope.launch {
