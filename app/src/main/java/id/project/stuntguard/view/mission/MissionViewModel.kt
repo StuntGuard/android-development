@@ -32,13 +32,12 @@ class MissionViewModel(private val repository: Repository) : ViewModel() {
         }
     }
 
-    fun deleteMission(authToken: String, idChild: Int) {
+    fun deleteMission(authToken: String, idMission: Int) {
         viewModelScope.launch {
             try {
-                val response = repository.deleteMission(authToken = authToken, idChild = idChild)
+                val response = repository.deleteMissions(authToken = authToken, idMission = idMission)
 
-                // to update List of child after delete operation get executed :
-                _getAllChildResponse.value = repository.getAllChild(authToken = authToken)
+                _getMissionResponse.value = repository.getMissions(authToken = authToken, idMission)
 
             } catch (e: HttpException) {
                 /*
@@ -49,7 +48,6 @@ class MissionViewModel(private val repository: Repository) : ViewModel() {
                     }
                 */
             }
-            _isLoading.value = false
         }
     }
 

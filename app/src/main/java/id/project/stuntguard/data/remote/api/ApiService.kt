@@ -91,16 +91,16 @@ interface ApiService {
     ): MissionResponse
 
     @FormUrlEncoded
-    @POST("missions/8")
+    @POST("missions/{idChild}")
     suspend fun postMission(
         @Header("Authorization") token: String,
         @Field("title") title: String,
         @Field("description") description: String,
-    ): AddMissionResponse
+    ): MissionResponse
 
-    @DELETE("childs/{idChild}")
+    @DELETE("missions/{idMission}")
     suspend fun deleteMissions(
         @Header("Authorization") token: String,
-        @Path("idMission") idChild: Int
-    ): SignUpResponse
+        @Path("idMission") idMission: Int
+    ): MissionResponse
 }

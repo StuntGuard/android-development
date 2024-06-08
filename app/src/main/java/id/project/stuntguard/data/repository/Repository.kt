@@ -96,15 +96,11 @@ class Repository private constructor(
         return apiService.deleteMissions(token = authToken, idMission = idMission)
     }
 
-    suspend fun test(authToken: String): GetAllChildResponse {
-        return apiService.getAllChild(token = authToken)
-    }
-
     suspend fun postMission(
         authToken: String,
         title: String,
         description: String,
-    ): AddMissionResponse {
+    ): MissionResponse {
         return apiService.postMission(
             token = authToken,
             title = title,

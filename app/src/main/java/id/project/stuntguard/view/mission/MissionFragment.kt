@@ -7,8 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import id.project.stuntguard.databinding.FragmentMissionBinding
+import id.project.stuntguard.utils.adapters.history.ChildListAdapter
 import id.project.stuntguard.utils.helper.ViewModelFactory
+import id.project.stuntguard.view.history.DetailHistoryListActivity
 
 class MissionFragment : Fragment() {
     private var _binding: FragmentMissionBinding? = null
@@ -33,24 +36,42 @@ class MissionFragment : Fragment() {
 
         viewModel.getMissions(authToken = authToken, 8)
 
-//        SetupView
-        val adapter = MissionAdapter()
-
-        binding.rvMission.adapter = adapter
-
-//        missionViewModel.missionList.observe(viewLifecycleOwner) { missions ->
-//            missionAdapter.submitList(missions)
-//        }
-
-        binding.addMissionButton.setOnClickListener {
-            val context = requireActivity()
-            val addMissionActivity = Intent(context, AddMissionActivity::class.java)
-            startActivity(addMissionActivity)
-        }
+        setupView(authToken = authToken)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun setupView(authToken: String) {
+        val adapter = MissionAdapter()
+        binding.apply {
+            viewModel.getMissionResponse.observe(viewLifecycleOwner) { response ->
+                if (response.data.isEmpty()) {
+                    showErrorMessage(true)
+                } else {
+                    showErrorMessage(false)
+                    adapter.submitList(response.data)
+                }
+            }
+            rvMission.layoutManager = LinearLayoutManager(requireActivity())
+            rvMission.adapter = adapter
+        }
+
+        adapter.setOnItemClickCallback(object : MissionAdapter.OnClickCallback {
+            override fun onItemClicked(idMission: Int, missionTitle: String) {
+//                No detail activity
+            }
+
+            override fun onDeleteClicked(idMission: Int) {
+                viewModel.deleteMission(authToken = authToken, idMission = idMission)
+            }
+        })
+    }
+
+    private fun showErrorMessage(isError: Boolean) {
+        binding.noDataMessage.visibility = if (isError) View.VISIBLE else View.GONE
+        binding.rvMission.visibility = if (isError) View.GONE else View.VISIBLE
     }
 }
