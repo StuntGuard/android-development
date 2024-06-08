@@ -40,6 +40,7 @@ class AddChildActivity : AppCompatActivity() {
 
         binding.apply {
             genderDropdown.setAdapter(genderOptionsAdapter)
+            genderDropdown.setDropDownBackgroundResource(R.color.medium_grey)
 
             backButton.setOnClickListener {
                 // to Remove AddChildActivity and back to AnalyzeFragment :

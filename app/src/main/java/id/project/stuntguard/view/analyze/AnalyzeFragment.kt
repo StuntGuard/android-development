@@ -55,6 +55,13 @@ class AnalyzeFragment : Fragment() {
         _binding = null
     }
 
+    // to Refresh the Fragment after Successfully Adding new Child Data :
+    override fun onResume() {
+        super.onResume()
+        val authToken = arguments?.getString("analyzeToken").toString()
+        viewModel.getAllChild(authToken = authToken)
+    }
+
     private fun setupAction(authToken: String) {
         binding.apply {
             addChildButton.setOnClickListener {
@@ -86,7 +93,10 @@ class AnalyzeFragment : Fragment() {
         val childNameOptions = listChildName
         val childOptionsAdapter =
             ArrayAdapter(requireActivity(), R.layout.dropdown_item, childNameOptions)
-        binding.childNameDropdown.setAdapter(childOptionsAdapter)
+        binding.childNameDropdown.apply {
+            setAdapter(childOptionsAdapter)
+            setDropDownBackgroundResource(R.color.medium_grey)
+        }
     }
 
     private fun analyze(authToken: String) {
