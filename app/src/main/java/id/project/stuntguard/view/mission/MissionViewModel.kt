@@ -1,16 +1,14 @@
 package id.project.stuntguard.view.mission
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import id.project.stuntguard.data.model.MissionModel
+import com.google.gson.Gson
 import id.project.stuntguard.data.remote.response.MissionResponse
 import id.project.stuntguard.data.repository.Repository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 
 class MissionViewModel(private val repository: Repository) : ViewModel() {
@@ -18,54 +16,41 @@ class MissionViewModel(private val repository: Repository) : ViewModel() {
     private val _getMissionResponse = MutableLiveData<MissionResponse>()
     val getMissionResponse: LiveData<MissionResponse> = _getMissionResponse
 
-    fun getMissions(authToken: String?, missionId: Int) {
+    fun getMissions(authToken: String?, idChild: Int) {
         viewModelScope.launch {
             try {
-                val missions = getMissionsWithRetry(authToken, missionId)
-                _missionList.postValue(missions)
+                val response = repository.getMissions(authToken = authToken, idChild = idChild)
+                _getMissionResponse.value = response
+
             } catch (e: HttpException) {
-                if (e.code() == 503) {
-                    showError("Server sedang tidak tersedia. Silakan coba lagi nanti.")
-                } else {
-                    showError("Terjadi kesalahan: ${e.message}")
-                }
-            } catch (e: Exception) {
-                showError("Terjadi kesalahan: ${e.message}")
+                Log.e(MissionViewModel.TAG, "onFailure: ${e.message()}")
+                val jsonInString = e.response()?.errorBody()?.string()
+                val errorBody =
+                    Gson().fromJson(jsonInString, MissionResponse::class.java)
+                _getMissionResponse.value = errorBody
             }
         }
     }
 
-    private suspend fun getMissionsWithRetry(authToken: String?, missionId: Int): List<MissionModel> {
-        return retry(times = 3, initialDelay = 1000L) {
-            withContext(Dispatchers.IO) {
-                repository.getMissions(authToken, missionId)
-            }
-        }
-    }
-
-    private fun showError(message: String) {
-        // Implementasi menampilkan pesan kesalahan ke UI
-        // Misalnya dengan LiveData atau mekanisme lain yang sesuai dengan arsitektur aplikasi Anda
-    }
-
-    suspend fun <T> retry(
-        times: Int,
-        initialDelay: Long,
-        maxDelay: Long = initialDelay * 2,
-        factor: Double = 2.0,
-        block: suspend () -> T
-    ): T {
-        var currentDelay = initialDelay
-        repeat(times - 1) {
+    fun deleteMission(authToken: String, idChild: Int) {
+        viewModelScope.launch {
             try {
-                return block()
-            } catch (e: Exception) {
-                e.printStackTrace()
+                val response = repository.deleteMission(authToken = authToken, idChild = idChild)
+
+                // to update List of child after delete operation get executed :
+                _getAllChildResponse.value = repository.getAllChild(authToken = authToken)
+
+            } catch (e: HttpException) {
+                /*
+                    Response will always be success :
+                    {
+                        "status": "Success"
+                        "message": "Child Deleted"
+                    }
+                */
             }
-            delay(currentDelay)
-            currentDelay = (currentDelay * factor).toLong().coerceAtMost(maxDelay)
+            _isLoading.value = false
         }
-        return block() // last attempt
     }
 
     companion object {

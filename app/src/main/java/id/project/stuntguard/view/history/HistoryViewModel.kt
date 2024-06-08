@@ -86,6 +86,6 @@ class HistoryViewModel(private val repository: Repository) : ViewModel() {
     }
 
     companion object {
-        private const val TAG = "HistoryViewModel"
+        const val TAG = "HistoryViewModel"
     }
 }

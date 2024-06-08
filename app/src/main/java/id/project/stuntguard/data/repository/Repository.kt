@@ -8,6 +8,7 @@ import id.project.stuntguard.data.remote.response.AddMissionResponse
 import id.project.stuntguard.data.remote.response.GetAllChildResponse
 import id.project.stuntguard.data.remote.response.GetChildPredictHistoryResponse
 import id.project.stuntguard.data.remote.response.GetPredictResultResponse
+import id.project.stuntguard.data.remote.response.MissionResponse
 import id.project.stuntguard.data.remote.response.PredictChildResponse
 import id.project.stuntguard.data.remote.response.SignInResponse
 import id.project.stuntguard.data.remote.response.SignUpResponse
@@ -87,8 +88,16 @@ class Repository private constructor(
         return apiService.getPredictHistory(token = authToken, idChild = idChild)
     }
 
-    suspend fun getMissions(authToken: String?, idChild: Int): List<MissionModel> {
+    suspend fun getMissions(authToken: String?, idChild: Int): MissionResponse {
         return apiService.getMissions(token = authToken, idChild = idChild)
+    }
+
+    suspend fun deleteMissions(authToken: String, idMission: Int): MissionResponse {
+        return apiService.deleteMissions(token = authToken, idMission = idMission)
+    }
+
+    suspend fun test(authToken: String): GetAllChildResponse {
+        return apiService.getAllChild(token = authToken)
     }
 
     suspend fun postMission(

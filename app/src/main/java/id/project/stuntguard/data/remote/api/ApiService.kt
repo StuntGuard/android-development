@@ -5,6 +5,7 @@ import id.project.stuntguard.data.remote.response.AddMissionResponse
 import id.project.stuntguard.data.remote.response.GetAllChildResponse
 import id.project.stuntguard.data.remote.response.GetChildPredictHistoryResponse
 import id.project.stuntguard.data.remote.response.GetPredictResultResponse
+import id.project.stuntguard.data.remote.response.MissionResponse
 import id.project.stuntguard.data.remote.response.PredictChildResponse
 import id.project.stuntguard.data.remote.response.SignInResponse
 import id.project.stuntguard.data.remote.response.SignUpResponse
@@ -87,7 +88,7 @@ interface ApiService {
     suspend fun getMissions(
         @Header("Authorization") token: String?,
         @Path("idChild") idChild: Int
-    ): List<MissionModel>
+    ): MissionResponse
 
     @FormUrlEncoded
     @POST("missions/8")
@@ -96,4 +97,10 @@ interface ApiService {
         @Field("title") title: String,
         @Field("description") description: String,
     ): AddMissionResponse
+
+    @DELETE("childs/{idChild}")
+    suspend fun deleteMissions(
+        @Header("Authorization") token: String,
+        @Path("idMission") idChild: Int
+    ): SignUpResponse
 }
