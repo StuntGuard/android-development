@@ -5,15 +5,22 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import id.project.stuntguard.R
+import id.project.stuntguard.data.model.ChildModel
+import id.project.stuntguard.data.remote.response.GetAllChildResponse
 import id.project.stuntguard.databinding.FragmentHomeBinding
 import id.project.stuntguard.utils.helper.ViewModelFactory
 import id.project.stuntguard.view.mission.AddMissionActivity
 import id.project.stuntguard.view.mission.HomeAdapter
 import id.project.stuntguard.view.mission.MissionAdapter
+import kotlinx.coroutines.launch
+import retrofit2.HttpException
 
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
@@ -21,6 +28,9 @@ class HomeFragment : Fragment() {
     private val viewModel by viewModels<HomeViewModel> {
         ViewModelFactory.getInstance(requireActivity())
     }
+    private var listChild = arrayListOf<ChildModel>()
+    private var listChildName = arrayListOf<String>()
+    private var idPredictLog = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -63,6 +73,17 @@ class HomeFragment : Fragment() {
         viewModel.getMissions(authToken = authToken, idChild = 27)
 
         setupView(authToken = authToken, idChild = 27)
+
+//        Latest Child
+        viewModel.getAllChild(authToken = authToken)
+        viewModel.getAllChildResponse.observe(viewLifecycleOwner) { response ->
+            setupChildList(response)
+        }
+
+        viewModel.isLoading.observe(viewLifecycleOwner) {
+            showLoading(it)
+        }
+
     }
 
     private fun setupView(authToken: String, idChild: Int) {
@@ -81,6 +102,30 @@ class HomeFragment : Fragment() {
         }
     }
 
+    private fun setupChildList(response: GetAllChildResponse) {
+        listChild.clear()
+        listChildName.clear()
+
+        for (child in response.data) {
+            val childData = ChildModel(
+                id = child.id,
+                name = child.name,
+                urlPhoto = child.urlPhoto,
+                gender = child.gender
+            )
+            listChild.add(childData)
+            listChildName.add(child.name)
+        }
+
+        val childNameOptions = listChildName
+        val childOptionsAdapter =
+            ArrayAdapter(requireActivity(), R.layout.dropdown_item, childNameOptions)
+        binding.childNameDropdown.apply {
+            setAdapter(childOptionsAdapter)
+            setDropDownBackgroundResource(R.color.medium_grey)
+        }
+    }
+
     private fun showErrorMessage(isError: Boolean) {
         binding.noDataMessage.visibility = if (isError) View.VISIBLE else View.GONE
         binding.rvMission.visibility = if (isError) View.GONE else View.VISIBLE
@@ -95,5 +140,9 @@ class HomeFragment : Fragment() {
         binding.logout.setOnClickListener {
             viewModel.logout()
         }
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 }
