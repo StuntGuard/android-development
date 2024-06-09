@@ -34,9 +34,9 @@ class MissionFragment : Fragment() {
         val authToken = arguments?.getString("missionToken").toString()
 
 //        Still don't know how to get this idChild
-        viewModel.getMissions(authToken = authToken, idChild = 28)
+        viewModel.getMissions(authToken = authToken, idChild = 27)
 
-        setupView(authToken = authToken, idChild = 28)
+        setupView(authToken = authToken, idChild = 27)
     }
 
     override fun onDestroyView() {
@@ -61,7 +61,7 @@ class MissionFragment : Fragment() {
             addMissionButton.setOnClickListener {
                 val intentToAddMission = Intent(requireActivity(), AddMissionActivity::class.java)
                 intentToAddMission.putExtra(AddMissionActivity.EXTRA_TOKEN, authToken)
-                intentToAddMission.putExtra(AddMissionActivity.EXTRA_ID, idChild)
+//                intentToAddMission.putExtra(AddMissionActivity.EXTRA_ID, idChild)
                 startActivity(intentToAddMission)
             }
         }

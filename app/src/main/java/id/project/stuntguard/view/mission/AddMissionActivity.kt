@@ -27,7 +27,8 @@ class AddMissionActivity : AppCompatActivity() {
         setupView()
 
         val authToken = intent.getStringExtra(EXTRA_TOKEN).toString()
-        val idChild = intent.getStringExtra(EXTRA_ID).toString().toInt()
+//        val idChild = intent.getStringExtra(EXTRA_ID).toString().toInt()
+        val idChild = 27
 
         binding.apply {
 
@@ -94,6 +95,6 @@ class AddMissionActivity : AppCompatActivity() {
 
     companion object {
         const val EXTRA_TOKEN = "extra_token"
-        const val EXTRA_ID = "extra_id"
+//        const val EXTRA_ID = "extra_id"
     }
 }
