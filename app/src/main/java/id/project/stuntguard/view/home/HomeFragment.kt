@@ -5,12 +5,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import id.project.stuntguard.R
 import id.project.stuntguard.data.model.ChildModel
 import id.project.stuntguard.data.remote.response.GetAllChildResponse
@@ -30,6 +32,7 @@ class HomeFragment : Fragment() {
     }
     private var listChild = arrayListOf<ChildModel>()
     private var listChildName = arrayListOf<String>()
+    private var selectedChildId: Int? = null
     private var idPredictLog = 0
 
     override fun onCreateView(
@@ -123,7 +126,23 @@ class HomeFragment : Fragment() {
         binding.childNameDropdown.apply {
             setAdapter(childOptionsAdapter)
             setDropDownBackgroundResource(R.color.medium_grey)
+            onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
+                selectedChildId = listChild[position].id
+                updateChildCard(listChild[position])
+            }
         }
+    }
+
+    private fun updateChildCard(child: ChildModel) {
+        binding.childNameTextView.text = child.name
+        binding.childGenderTextView.text = child.gender
+        // Set age if available
+        // binding.childAgeTextView.text = ...
+
+        Glide.with(this)
+            .load(child.urlPhoto)
+            .placeholder(R.drawable.ic_person)
+            .into(binding.childImageView)
     }
 
     private fun showErrorMessage(isError: Boolean) {

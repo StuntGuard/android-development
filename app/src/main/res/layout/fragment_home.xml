@@ -133,12 +133,69 @@
         app:layout_constraintTop_toBottomOf="@id/guidelineHorizontal2" />
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/childCardView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/guidelineHorizontal"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@color/medium_grey"
+        app:layout_constraintBottom_toTopOf="@id/guidelineHorizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@id/textView">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp">
+
+            <ImageView
+                android:id="@+id/childImageView"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_person"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/childNameTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Child Name"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@id/childGenderTextView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/childImageView"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/childGenderTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Child Gender"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toTopOf="@id/childAgeTextView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/childImageView"
+                app:layout_constraintTop_toBottomOf="@id/childNameTextView" />
+
+            <TextView
+                android:id="@+id/childAgeTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Child Age"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/childImageView"
+                app:layout_constraintTop_toBottomOf="@id/childGenderTextView" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
 
     <TextView
         android:id="@+id/your_activity"
