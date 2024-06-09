@@ -32,7 +32,7 @@ class AddMissionViewModel (
     private val _errorResponse = MutableLiveData<String?>()
     val errorResponse: LiveData<String?> = _errorResponse
 
-    fun postMissions(context: Context, authToken: String, title: String, description: String) {
+    fun postMissions(context: Context, authToken: String, idChild: Int, title: String, description: String) {
         viewModelScope.launch {
             try {
                 val titleRequest = title.toRequestBody("text/plain".toMediaType())
@@ -40,6 +40,7 @@ class AddMissionViewModel (
 
                 val response = repository.postMission(
                     authToken = authToken,
+                    idChild = idChild,
                     title = title,
                     description = description
                 )

@@ -1,22 +1,16 @@
 package id.project.stuntguard.view.mission
 
-import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
-import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.viewModels
-import id.project.stuntguard.R
+import androidx.appcompat.app.AlertDialog
 import id.project.stuntguard.databinding.ActivityAddMissionBinding
 import id.project.stuntguard.utils.helper.ViewModelFactory
-import id.project.stuntguard.view.analyze.AddChildActivity
-import id.project.stuntguard.view.analyze.AnalyzeViewModel
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.MultipartBody
-import okhttp3.RequestBody.Companion.toRequestBody
 
 class AddMissionActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddMissionBinding
@@ -30,6 +24,49 @@ class AddMissionActivity : AppCompatActivity() {
         binding = ActivityAddMissionBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setupView()
+
+        val authToken = intent.getStringExtra(EXTRA_TOKEN).toString()
+        val idChild = intent.getStringExtra(EXTRA_ID).toString().toInt()
+
+        binding.apply {
+
+            backButton.setOnClickListener {
+                // to Remove AddChildActivity and back to AnalyzeFragment :
+                finish()
+            }
+
+            btnSubmit.setOnClickListener {
+                postMissions(authToken = authToken, idChild = idChild)
+            }
+        }
+
+        viewModel.addMissionResponse.observe(this@AddMissionActivity) { response ->
+            AlertDialog.Builder(this).apply {
+                setTitle("Success")
+                setMessage(response.message)
+                setPositiveButton("Ok") { _, _ ->
+                    finish()
+                }
+                create()
+                show()
+            }
+        }
+
+        viewModel.errorResponse.observe(this@AddMissionActivity) { errorMessage ->
+            AlertDialog.Builder(this).apply {
+                setTitle("Invalid")
+                setMessage(errorMessage)
+                setPositiveButton("Ok") { _, _ ->
+                    // Do Nothing
+                }
+                create()
+                show()
+            }
+        }
+    }
+
+    private fun setupView() {
         @Suppress("DEPRECATION")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             window.insetsController?.hide(WindowInsets.Type.statusBars())
@@ -40,40 +77,23 @@ class AddMissionActivity : AppCompatActivity() {
             )
         }
         supportActionBar?.hide()
-
-        val authToken = intent.getStringExtra(EXTRA_TOKEN).toString()
-
-        binding.apply {
-
-            btnSubmit.setOnClickListener {
-                if(etMissionDesc.text.toString().isEmpty()){
-                    showToast("Mission description still empty!")
-                    return@setOnClickListener
-                } else if (etMissionTitle.text.toString().isEmpty()){
-                    showToast("Mission title still empty!")
-                    return@setOnClickListener
-                }
-                postMission()
-            }
-
-        }
     }
 
-    private fun showToast(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-    }
+    private fun postMissions(authToken: String, idChild: Int) {
+        val title = binding.etMissionTitle.text.toString().trim()
+        val description = binding.etMissionDesc.text.toString().trim()
 
-    private fun postMission() {
-        val title = binding.etMissionTitle.text.toString()
-        val description = binding.etMissionDesc.text.toString()
-
-//        val requestBodyTitle = title.toRequestBody("text/plain".toMediaType())
-//        val requestBodyDescription = description.toRequestBody("text/plain".toMediaType())
-
-//        viewModel.postMissions(title,description)
+        viewModel.postMissions(
+            context = this@AddMissionActivity,
+            authToken = authToken,
+            idChild = idChild,
+            title = title,
+            description = description
+        )
     }
 
     companion object {
         const val EXTRA_TOKEN = "extra_token"
+        const val EXTRA_ID = "extra_id"
     }
 }

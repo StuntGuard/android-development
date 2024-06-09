@@ -9,9 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import id.project.stuntguard.databinding.FragmentMissionBinding
-import id.project.stuntguard.utils.adapters.history.ChildListAdapter
 import id.project.stuntguard.utils.helper.ViewModelFactory
-import id.project.stuntguard.view.history.DetailHistoryListActivity
+import id.project.stuntguard.view.analyze.AddChildActivity
 
 class MissionFragment : Fragment() {
     private var _binding: FragmentMissionBinding? = null
@@ -35,9 +34,9 @@ class MissionFragment : Fragment() {
         val authToken = arguments?.getString("missionToken").toString()
 
 //        Still don't know how to get this idChild
-        viewModel.getMissions(authToken = authToken, idChild = 27)
+        viewModel.getMissions(authToken = authToken, idChild = 28)
 
-        setupView(authToken = authToken)
+        setupView(authToken = authToken, idChild = 28)
     }
 
     override fun onDestroyView() {
@@ -45,7 +44,7 @@ class MissionFragment : Fragment() {
         _binding = null
     }
 
-    private fun setupView(authToken: String) {
+    private fun setupView(authToken: String, idChild: Int) {
         val adapter = MissionAdapter()
         binding.apply {
             viewModel.getMissionResponse.observe(viewLifecycleOwner) { response ->
@@ -58,6 +57,13 @@ class MissionFragment : Fragment() {
             }
             rvMission.layoutManager = LinearLayoutManager(requireActivity())
             rvMission.adapter = adapter
+
+            addMissionButton.setOnClickListener {
+                val intentToAddMission = Intent(requireActivity(), AddMissionActivity::class.java)
+                intentToAddMission.putExtra(AddMissionActivity.EXTRA_TOKEN, authToken)
+                intentToAddMission.putExtra(AddMissionActivity.EXTRA_ID, idChild)
+                startActivity(intentToAddMission)
+            }
         }
 
         adapter.setOnItemClickCallback(object : MissionAdapter.OnClickCallback {

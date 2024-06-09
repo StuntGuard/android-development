@@ -98,6 +98,7 @@ class Repository private constructor(
 
     suspend fun postMission(
         authToken: String,
+        idChild: Int,
         title: String,
         description: String,
     ): SignUpResponse {
@@ -105,6 +106,7 @@ class Repository private constructor(
             token = authToken,
             title = title,
             description = description,
+            idChild = idChild
         )
     }
 

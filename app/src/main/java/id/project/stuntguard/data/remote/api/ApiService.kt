@@ -94,6 +94,7 @@ interface ApiService {
     @POST("missions/{idChild}")
     suspend fun postMission(
         @Header("Authorization") token: String,
+        @Path("idChild") idChild: Int,
         @Field("title") title: String,
         @Field("description") description: String,
     ): SignUpResponse
