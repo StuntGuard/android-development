@@ -1,50 +1,39 @@
-package id.project.stuntguard.view.mission
+package id.project.stuntguard.utils.adapters.mission
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import id.project.stuntguard.R
-import id.project.stuntguard.data.model.MissionModel
-import id.project.stuntguard.data.remote.response.DataChild
 import id.project.stuntguard.data.remote.response.DataMission
-import id.project.stuntguard.databinding.ItemHistoryChildBinding
 import id.project.stuntguard.databinding.ItemMissionBinding
-import id.project.stuntguard.utils.adapters.history.ChildListAdapter
 
-class MissionAdapter : ListAdapter<DataMission, MissionAdapter.MissionViewHolder>(
-    MissionAdapter.DIFF_CALLBACK
+class MissionListAdapter : ListAdapter<DataMission, MissionListAdapter.ListViewHolder>(
+    DIFF_CALLBACK
 ) {
     private lateinit var onClickCallback: OnClickCallback
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MissionViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
         val binding = ItemMissionBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false
         )
-        return MissionViewHolder(binding)
+        return ListViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: MissionViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
         val dataMission = getItem(position)
+
         holder.apply {
             bind(dataMission)
-            itemView.setOnClickListener {
-                onClickCallback.onItemClicked(dataMission.id, dataMission.title)
-            }
             binding.delete.setOnClickListener {
                 onClickCallback.onDeleteClicked(dataMission.id)
             }
         }
     }
 
-    class MissionViewHolder(val binding: ItemMissionBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    class ListViewHolder(val binding: ItemMissionBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(dataMission: DataMission) {
             binding.apply {
                 missionTitle.text = dataMission.title
@@ -53,12 +42,11 @@ class MissionAdapter : ListAdapter<DataMission, MissionAdapter.MissionViewHolder
         }
     }
 
-    fun setOnItemClickCallback(onClickCallback: MissionAdapter.OnClickCallback) {
+    fun setOnItemClickCallback(onClickCallback: OnClickCallback) {
         this.onClickCallback = onClickCallback
     }
 
     interface OnClickCallback {
-        fun onItemClicked(idMission: Int, missionTitle: String)
         fun onDeleteClicked(idMission: Int)
     }
 

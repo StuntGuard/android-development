@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
 import id.project.stuntguard.data.remote.response.GetAllChildResponse
 import id.project.stuntguard.data.remote.response.GetChildPredictHistoryResponse
+import id.project.stuntguard.data.remote.response.MissionResponse
 import id.project.stuntguard.data.repository.Repository
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
@@ -19,6 +20,9 @@ class HomeViewModel(private val repository: Repository) : ViewModel() {
     private val _getChildPredictHistoryResponse = MutableLiveData<GetChildPredictHistoryResponse>()
     val getChildPredictHistoryResponse: LiveData<GetChildPredictHistoryResponse> =
         _getChildPredictHistoryResponse
+
+    private val _getMissionResponse = MutableLiveData<MissionResponse>()
+    val getMissionResponse: LiveData<MissionResponse> = _getMissionResponse
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
@@ -69,6 +73,45 @@ class HomeViewModel(private val repository: Repository) : ViewModel() {
 
             }
             _isLoading.value = false
+        }
+    }
+
+    fun getMissions(authToken: String, idChild: Int) {
+        _isLoading.value = true
+        viewModelScope.launch {
+            try {
+                val response = repository.getMissions(authToken = authToken, idChild = idChild)
+                _getMissionResponse.value = response
+
+            } catch (e: HttpException) {
+                /*
+                    Response will always be success :
+                    {
+                        "status": "Success"
+                        "message": "data fetched"
+                        "data": []
+                    }
+                */
+            }
+            _isLoading.value = false
+        }
+    }
+
+    fun deleteMission(authToken: String, idMission: Int) {
+        viewModelScope.launch {
+            try {
+                repository.deleteMissions(authToken = authToken, idMission = idMission)
+                _getAllChildResponse.value = repository.getAllChild(authToken = authToken)
+
+            } catch (e: HttpException) {
+                /*
+                    Response will always be success :
+                    {
+                        "status": "Success"
+                        "message": "Mission Deleted"
+                    }
+                */
+            }
         }
     }
 

@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -14,6 +13,7 @@ import id.project.stuntguard.R
 import id.project.stuntguard.data.model.ChildModel
 import id.project.stuntguard.data.remote.response.GetAllChildResponse
 import id.project.stuntguard.databinding.FragmentMissionBinding
+import id.project.stuntguard.utils.adapters.mission.MissionListAdapter
 import id.project.stuntguard.utils.helper.ViewModelFactory
 import id.project.stuntguard.view.analyze.AddChildActivity
 
@@ -23,10 +23,8 @@ class MissionFragment : Fragment() {
     private val viewModel by viewModels<MissionViewModel> {
         ViewModelFactory.getInstance(requireActivity())
     }
-    private lateinit var adapter: MissionAdapter
     private var listChild = arrayListOf<ChildModel>()
     private var listChildName = arrayListOf<String>()
-    private var selectedChildId: Int? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,40 +37,12 @@ class MissionFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         val authToken = arguments?.getString("missionToken").toString()
-
-//        Still don't know how to get this idChild
-        var idChild = 27
-        val childName = binding.childNameDropdown.text.toString().trim()
-
-        var childData: ChildModel? = null
-
-        for (child in listChild) {
-            if (childName == child.name) {
-                childData = child
-            }
-        }
-
-        if (childData != null) {
-            idChild = childData.id
-        }
-
-        viewModel.getMissions(authToken = authToken, idChild = idChild)
-
-        setupView(authToken = authToken, idChild = idChild)
-
         viewModel.getAllChild(authToken = authToken)
-        viewModel.getAllChildResponse.observe(viewLifecycleOwner) { response ->
-            setupChildList(response)
-        }
 
-        viewModel.isLoading.observe(viewLifecycleOwner) {
-            showLoading(it)
-        }
-
-//        setupObservers(authToken)
-//        setupDropdown(authToken)
-
+        setupView(authToken)
+        setupAction(authToken = authToken)
     }
 
     override fun onDestroyView() {
@@ -80,66 +50,35 @@ class MissionFragment : Fragment() {
         _binding = null
     }
 
-    private fun setupView(authToken: String, idChild: Int) {
-        val adapter = MissionAdapter()
-        binding.apply {
-            viewModel.getMissionResponse.observe(viewLifecycleOwner) { response ->
-                if (response.data.isEmpty()) {
-                    showErrorMessage(true)
-                } else {
-                    showErrorMessage(false)
-                    adapter.submitList(response.data)
-                }
-            }
-            rvMission.layoutManager = LinearLayoutManager(requireActivity())
-            rvMission.adapter = adapter
-
-            addMissionButton.setOnClickListener {
-                val intentToAddMission = Intent(requireActivity(), AddMissionActivity::class.java)
-                intentToAddMission.putExtra(AddMissionActivity.EXTRA_TOKEN, authToken)
-//                intentToAddMission.putExtra(AddMissionActivity.EXTRA_ID, idChild)
-                startActivity(intentToAddMission)
-            }
-        }
-
-        adapter.setOnItemClickCallback(object : MissionAdapter.OnClickCallback {
-            override fun onItemClicked(idMission: Int, missionTitle: String) {
-//                No detail activity
-            }
-
-            override fun onDeleteClicked(idMission: Int) {
-                viewModel.deleteMission(authToken = authToken, idMission = idMission)
-            }
-        })
+    // to Refresh MissionFragment when noDataButton get clicked and navigated to other screen then back to here :
+    override fun onResume() {
+        super.onResume()
+        val authToken = arguments?.getString("missionToken").toString()
+        viewModel.getAllChild(authToken = authToken)
     }
 
-    private fun setupObservers(authToken: String) {
-        viewModel.getMissionResponse.observe(viewLifecycleOwner) { response ->
-            if (response.data.isEmpty()) {
-                showErrorMessage(true)
-            } else {
-                showErrorMessage(false)
-                adapter.submitList(response.data)
-            }
-        }
-
+    private fun setupView(authToken: String) {
         viewModel.getAllChildResponse.observe(viewLifecycleOwner) { response ->
             setupChildList(response)
+            setupMissionList(authToken = authToken)
         }
 
         viewModel.isLoading.observe(viewLifecycleOwner) {
             showLoading(it)
         }
-
-        viewModel.getAllChild(authToken)
     }
 
-    private fun setupDropdown(authToken: String) {
-        binding.childNameDropdown.onItemClickListener =
-            AdapterView.OnItemClickListener { parent, view, position, id ->
-                selectedChildId = listChild[position].id
-                selectedChildId?.let { viewModel.getMissions(authToken = authToken, idChild = it) }
-            }
+    private fun setupAction(authToken: String) {
+        binding.addMissionButton.setOnClickListener {
+            val intentToAddMission = Intent(requireActivity(), AddMissionActivity::class.java)
+            intentToAddMission.putExtra(AddMissionActivity.EXTRA_TOKEN, authToken)
+            startActivity(intentToAddMission)
+        }
+
+        // Listener for the dropdown selection to keep Mission List update based on selection :
+        binding.childNameDropdown.setOnItemClickListener { _, _, _, _ ->
+            setupMissionList(authToken = authToken)
+        }
     }
 
     private fun setupChildList(response: GetAllChildResponse) {
@@ -163,15 +102,78 @@ class MissionFragment : Fragment() {
         binding.childNameDropdown.apply {
             setAdapter(childOptionsAdapter)
             setDropDownBackgroundResource(R.color.medium_grey)
+
+            // To set default selected child on Dropdown Input :
+            if (listChildName.isNotEmpty()) {
+                setText(listChildName[0], false)
+            } else {
+                setText(R.string.choose_your_child)
+            }
         }
     }
 
-    private fun showErrorMessage(isError: Boolean) {
-        binding.noDataMessage.visibility = if (isError) View.VISIBLE else View.GONE
-        binding.rvMission.visibility = if (isError) View.GONE else View.VISIBLE
+    private fun setupMissionList(authToken: String) {
+        binding.apply {
+            val adapter = MissionListAdapter()
+            val childName = childNameDropdown.text.toString().trim()
+            var childData: ChildModel? = null
+
+            for (child in listChild) {
+                if (child.name == childName) {
+                    childData = child
+                }
+            }
+
+            if (childData != null) {
+                viewModel.getMissions(authToken = authToken, idChild = childData.id)
+                viewModel.getMissionResponse.observe(viewLifecycleOwner) { response ->
+                    if (response.data.isEmpty()) {
+                        showData(false)
+                        noDataSubMessage.text = "Try to add new Mission"
+                        noDataButton.setOnClickListener {
+                            val intentToAddMission =
+                                Intent(requireActivity(), AddMissionActivity::class.java)
+                            intentToAddMission.putExtra(AddMissionActivity.EXTRA_TOKEN, authToken)
+                            startActivity(intentToAddMission)
+                        }
+
+                    } else {
+                        showData(true)
+                        adapter.submitList(response.data)
+                    }
+                }
+                rvMission.adapter = adapter
+                rvMission.layoutManager = LinearLayoutManager(requireActivity())
+
+                adapter.setOnItemClickCallback(object : MissionListAdapter.OnClickCallback {
+                    override fun onDeleteClicked(idMission: Int) {
+                        viewModel.deleteMission(authToken = authToken, idMission = idMission)
+                    }
+                })
+
+            } else {
+                showData(false)
+                noDataSubMessage.text = "Please add new Child Data"
+                noDataButton.setOnClickListener {
+                    val intentToAddChild = Intent(requireActivity(), AddChildActivity::class.java)
+                    intentToAddChild.putExtra(AddChildActivity.EXTRA_TOKEN, authToken)
+                    startActivity(intentToAddChild)
+                }
+            }
+        }
     }
 
     private fun showLoading(isLoading: Boolean) {
         binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+    }
+
+    private fun showData(hasData: Boolean) {
+        binding.apply {
+            rvMission.visibility = if (hasData) View.VISIBLE else View.GONE
+
+            noDataMessage.visibility = if (hasData) View.GONE else View.VISIBLE
+            noDataSubMessage.visibility = if (hasData) View.GONE else View.VISIBLE
+            noDataButton.visibility = if (hasData) View.GONE else View.VISIBLE
+        }
     }
 }

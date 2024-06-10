@@ -86,7 +86,7 @@ interface ApiService {
     // Mission Section :
     @GET("missions/{idChild}")
     suspend fun getMissions(
-        @Header("Authorization") token: String?,
+        @Header("Authorization") token: String,
         @Path("idChild") idChild: Int
     ): MissionResponse
 
@@ -103,5 +103,5 @@ interface ApiService {
     suspend fun deleteMissions(
         @Header("Authorization") token: String,
         @Path("idMission") idMission: Int
-    ): MissionResponse
+    ): SignUpResponse
 }

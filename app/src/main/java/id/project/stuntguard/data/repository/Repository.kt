@@ -88,15 +88,11 @@ class Repository private constructor(
         return apiService.getPredictHistory(token = authToken, idChild = idChild)
     }
 
-    suspend fun getMissions(authToken: String?, idChild: Int): MissionResponse {
+    suspend fun getMissions(authToken: String, idChild: Int): MissionResponse {
         return apiService.getMissions(token = authToken, idChild = idChild)
     }
 
-    suspend fun deleteMissions(authToken: String, idMission: Int): MissionResponse {
-        return apiService.deleteMissions(token = authToken, idMission = idMission)
-    }
-
-    suspend fun postMission(
+    suspend fun addMission(
         authToken: String,
         idChild: Int,
         title: String,
@@ -104,10 +100,14 @@ class Repository private constructor(
     ): SignUpResponse {
         return apiService.postMission(
             token = authToken,
+            idChild = idChild,
             title = title,
-            description = description,
-            idChild = idChild
+            description = description
         )
+    }
+
+    suspend fun deleteMissions(authToken: String, idMission: Int): SignUpResponse {
+        return apiService.deleteMissions(token = authToken, idMission = idMission)
     }
 
     companion object {

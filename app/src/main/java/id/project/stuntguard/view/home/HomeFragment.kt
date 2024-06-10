@@ -10,15 +10,22 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import id.project.stuntguard.R
 import id.project.stuntguard.data.model.ChildModel
+import id.project.stuntguard.data.remote.response.DataMission
 import id.project.stuntguard.data.remote.response.GetAllChildResponse
 import id.project.stuntguard.databinding.FragmentHomeBinding
+import id.project.stuntguard.utils.adapters.mission.MissionListAdapter
 import id.project.stuntguard.utils.helper.ViewModelFactory
 import id.project.stuntguard.utils.helper.formatDate
+import id.project.stuntguard.utils.helper.setResultTextColor
 import id.project.stuntguard.view.analyze.AddChildActivity
+import id.project.stuntguard.view.analyze.AnalyzeResultActivity
+import id.project.stuntguard.view.mission.AddMissionActivity
+import id.project.stuntguard.view.mission.MissionFragment
 
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
@@ -67,11 +74,13 @@ class HomeFragment : Fragment() {
         viewModel.getAllChildResponse.observe(viewLifecycleOwner) { response ->
             setupChildList(response)
             setupCardView(authToken)
+            setupMissionList(authToken)
         }
 
         // Listener for the dropdown selection to keep cardView update based on selection :
         binding.childNameDropdown.setOnItemClickListener { _, _, _, _ ->
             setupCardView(authToken = authToken)
+            setupMissionList(authToken)
         }
     }
 
@@ -137,10 +146,34 @@ class HomeFragment : Fragment() {
                         conditionStatus.text = response.data[0].subtitle
                         conditionResult.text = response.data[0].prediction
 
+                        // Set color of conditionResult :
+                        conditionResult.setTextColor(
+                            setResultTextColor(
+                                context = requireActivity(),
+                                response.data[0].prediction
+                            )[0]
+                        )
+
+                        // Set color of conditionStatus :
+                        conditionStatus.setTextColor(
+                            setResultTextColor(
+                                context = requireActivity(),
+                                response.data[0].subtitle
+                            )[1]
+                        )
+
                         val formattedDate = formatDate(response.data[0].createdAt)
                         profileDate.text = formattedDate
 
                         isCardDataProvided(true)
+
+                        // Action when CardView get clicked :
+                        childCardView.setOnClickListener {
+                            val intentToAnalyzeResult = Intent(requireActivity(), AnalyzeResultActivity::class.java)
+                            intentToAnalyzeResult.putExtra(AnalyzeResultActivity.EXTRA_TOKEN, authToken)
+                            intentToAnalyzeResult.putExtra(AnalyzeResultActivity.EXTRA_ID_PREDICT, response.data[0].id)
+                            startActivity(intentToAnalyzeResult)
+                        }
                     }
                 }
 
@@ -153,6 +186,46 @@ class HomeFragment : Fragment() {
                     intentToAddNewChild.putExtra(AddChildActivity.EXTRA_TOKEN, authToken)
                     startActivity(intentToAddNewChild)
                 }
+            }
+        }
+    }
+
+    private fun setupMissionList(authToken: String) {
+        binding.apply {
+            val adapter = MissionListAdapter()
+            val childName = childNameDropdown.text.toString().trim()
+            var childData: ChildModel? = null
+
+            for (child in listChild) {
+                if (child.name == childName) {
+                    childData = child
+                }
+            }
+
+            if (childData != null) {
+                viewModel.getMissions(authToken = authToken, idChild = childData.id)
+                viewModel.getMissionResponse.observe(viewLifecycleOwner) { response ->
+                    if (response.data.isEmpty()) {
+                        showMissionData(false)
+
+                    } else {
+                        showMissionData(true)
+
+                        // Take only 3 Mission Data to displayed in the rvMission / list :
+                        adapter.submitList(response.data.take(3))
+                    }
+                }
+                rvMission.adapter = adapter
+                rvMission.layoutManager = LinearLayoutManager(requireActivity())
+
+                adapter.setOnItemClickCallback(object : MissionListAdapter.OnClickCallback {
+                    override fun onDeleteClicked(idMission: Int) {
+                        viewModel.deleteMission(authToken = authToken, idMission = idMission)
+                    }
+                })
+
+            } else {
+                showMissionData(false)
             }
         }
     }
@@ -188,6 +261,14 @@ class HomeFragment : Fragment() {
             noDataCard.visibility = if (hasData) View.GONE else View.VISIBLE
             noDataMessageCard.visibility = if (hasData) View.GONE else View.VISIBLE
             buttonCard.visibility = if (hasData) View.GONE else View.VISIBLE
+        }
+    }
+
+    private fun showMissionData(hasData: Boolean) {
+        binding.apply {
+            rvMission.visibility = if (hasData) View.VISIBLE else View.GONE
+
+            noDataMessage.visibility = if (hasData) View.GONE else View.VISIBLE
         }
     }
 }

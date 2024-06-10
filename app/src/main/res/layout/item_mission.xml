@@ -4,49 +4,50 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="18dp"
+    android:layout_margin="8dp"
     android:backgroundTint="@color/medium_grey"
-    app:cardCornerRadius="20dp"
-    app:cardElevation="18dp">
+    app:cardCornerRadius="16dp"
+    app:cardElevation="16dp">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal"
         android:padding="18dp">
 
-        <LinearLayout
-            android:layout_width="280dp"
-            android:layout_height="match_parent"
+        <TextView
+            android:id="@+id/mission_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="18dp"
-            android:gravity="center_vertical"
-            android:orientation="vertical">
+            android:layout_marginEnd="24dp"
+            android:textColor="@color/soft_blue"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            tools:text="Latihan Berjalan"
+            app:layout_constraintEnd_toStartOf="@id/delete"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/mission_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/soft_blue"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                tools:text="Latihan Berjalan" />
-
-            <TextView
-                android:id="@+id/mission_description"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="16sp"
-                tools:text="Menemani Anak Berjalan" />
-
-        </LinearLayout>
+        <TextView
+            android:id="@+id/mission_description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="@id/mission_title"
+            app:layout_constraintStart_toStartOf="@id/mission_title"
+            app:layout_constraintTop_toBottomOf="@id/mission_title"
+            tools:text="Menemani Anak Berjalan" />
 
         <ImageView
             android:id="@+id/delete"
-            android:layout_width="35dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:src="@drawable/ic_delete" />
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_delete"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>
