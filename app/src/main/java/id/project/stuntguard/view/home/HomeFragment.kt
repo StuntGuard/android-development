@@ -5,24 +5,20 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.viewModelScope
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import id.project.stuntguard.R
 import id.project.stuntguard.data.model.ChildModel
 import id.project.stuntguard.data.remote.response.GetAllChildResponse
 import id.project.stuntguard.databinding.FragmentHomeBinding
 import id.project.stuntguard.utils.helper.ViewModelFactory
-import id.project.stuntguard.view.mission.AddMissionActivity
-import id.project.stuntguard.view.mission.HomeAdapter
-import id.project.stuntguard.view.mission.MissionAdapter
-import kotlinx.coroutines.launch
-import retrofit2.HttpException
+import id.project.stuntguard.utils.helper.formatDate
+import id.project.stuntguard.view.analyze.AddChildActivity
 
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
@@ -32,8 +28,6 @@ class HomeFragment : Fragment() {
     }
     private var listChild = arrayListOf<ChildModel>()
     private var listChildName = arrayListOf<String>()
-    private var selectedChildId: Int? = null
-    private var idPredictLog = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,61 +41,37 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupAction()
+        val authToken = arguments?.getString("homeToken").toString()
+        val userName = arguments?.getString("userName").toString()
+        binding.user.text = userName
 
-        /*
-            Note ~ Fidel :
-            How to use the Authorization Token?
-
-            -> Uncomment this section to try it out :
-
-            // val authToken = arguments?.getString("homeToken")
-            // binding.seeAll.text = authToken
-
-            -> how to know the key of arguments? :
-            -> It provided on navigation_graph.xml, argument's key name is located on fragment > argument > name
-
-            -> How I know it work? :
-            -> The textView on "See All" that should be show text "See All" will change to "Bearer Ey5dfc45..." on right center of the screen
-        */
-
-        // TODO :
-
-        binding.seeAll.setOnClickListener {
-            Toast.makeText(requireActivity(), "See All clicked", Toast.LENGTH_SHORT).show()
-        }
-
-        val authToken = arguments?.getString("missionToken").toString()
-
-        viewModel.getMissions(authToken = authToken, idChild = 27)
-
-        setupView(authToken = authToken, idChild = 27)
-
-//        Latest Child
         viewModel.getAllChild(authToken = authToken)
-        viewModel.getAllChildResponse.observe(viewLifecycleOwner) { response ->
-            setupChildList(response)
-        }
 
-        viewModel.isLoading.observe(viewLifecycleOwner) {
-            showLoading(it)
-        }
-
+        setupView(authToken = authToken)
+        setupAction()
     }
 
-    private fun setupView(authToken: String, idChild: Int) {
-        val adapter = HomeAdapter()
-        binding.apply {
-            viewModel.getMissionResponse.observe(viewLifecycleOwner) { response ->
-                if (response.data.isEmpty()) {
-                    showErrorMessage(true)
-                } else {
-                    showErrorMessage(false)
-                    adapter.submitList(response.data)
-                }
-            }
-            rvMission.layoutManager = LinearLayoutManager(requireActivity())
-            rvMission.adapter = adapter
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    // To refresh HomeFragment when ButtonCard get clicked and navigated to other screen then back to here :
+    override fun onResume() {
+        super.onResume()
+        val authToken = arguments?.getString("homeToken").toString()
+        viewModel.getAllChild(authToken = authToken)
+    }
+
+    private fun setupView(authToken: String) {
+        viewModel.getAllChildResponse.observe(viewLifecycleOwner) { response ->
+            setupChildList(response)
+            setupCardView(authToken)
+        }
+
+        // Listener for the dropdown selection to keep cardView update based on selection :
+        binding.childNameDropdown.setOnItemClickListener { _, _, _, _ ->
+            setupCardView(authToken = authToken)
         }
     }
 
@@ -126,42 +96,98 @@ class HomeFragment : Fragment() {
         binding.childNameDropdown.apply {
             setAdapter(childOptionsAdapter)
             setDropDownBackgroundResource(R.color.medium_grey)
-            onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
-                selectedChildId = listChild[position].id
-                updateChildCard(listChild[position])
+
+            // To set default selected child on Dropdown Input :
+            if (listChildName.isNotEmpty()) {
+                setText(listChildName[0], false)
+            } else {
+                setText(R.string.choose_your_child)
             }
         }
     }
 
-    private fun updateChildCard(child: ChildModel) {
-        binding.childNameTextView.text = child.name
-        binding.childGenderTextView.text = child.gender
-        // Set age if available
-        // binding.childAgeTextView.text = ...
+    private fun setupCardView(authToken: String) {
+        binding.apply {
+            val childName = childNameDropdown.text.toString().trim()
+            var childData: ChildModel? = null
 
-        Glide.with(this)
-            .load(child.urlPhoto)
-            .placeholder(R.drawable.ic_person)
-            .into(binding.childImageView)
-    }
+            for (child in listChild) {
+                if (childName == child.name) {
+                    childData = child
+                }
+            }
 
-    private fun showErrorMessage(isError: Boolean) {
-        binding.noDataMessage.visibility = if (isError) View.VISIBLE else View.GONE
-        binding.rvMission.visibility = if (isError) View.GONE else View.VISIBLE
-    }
+            if (childData != null) {
+                viewModel.getChildPredictHistory(authToken = authToken, idChild = childData.id)
+                viewModel.getChildPredictHistoryResponse.observe(viewLifecycleOwner) { response ->
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+                    if (response.data.isEmpty()) {
+                        isCardDataProvided(false)
+                        noDataMessageCard.text = "Try to Analyze Your Child"
+                        buttonCard.setOnClickListener {
+                            navigateToOtherFragment(R.id.navigation_analyze)
+                        }
+
+                    } else {
+                        Glide.with(profileImage.context)
+                            .load(childData.urlPhoto)
+                            .circleCrop()
+                            .into(profileImage)
+                        profileName.text = response.data[0].name
+                        conditionStatus.text = response.data[0].subtitle
+                        conditionResult.text = response.data[0].prediction
+
+                        val formattedDate = formatDate(response.data[0].createdAt)
+                        profileDate.text = formattedDate
+
+                        isCardDataProvided(true)
+                    }
+                }
+
+            } else {
+                isCardDataProvided(false)
+                noDataMessageCard.text = "Please Add Your New Child Data"
+                buttonCard.setOnClickListener {
+                    val intentToAddNewChild =
+                        Intent(requireActivity(), AddChildActivity::class.java)
+                    intentToAddNewChild.putExtra(AddChildActivity.EXTRA_TOKEN, authToken)
+                    startActivity(intentToAddNewChild)
+                }
+            }
+        }
     }
 
     private fun setupAction() {
         binding.logout.setOnClickListener {
             viewModel.logout()
         }
+        binding.seeAll.setOnClickListener {
+            navigateToOtherFragment(R.id.navigation_mission)
+        }
     }
 
-    private fun showLoading(isLoading: Boolean) {
-        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+    private fun navigateToOtherFragment(destinationFragmentId: Int) {
+        val navController = findNavController()
+        val bottomNavView = requireActivity().findViewById<BottomNavigationView>(R.id.nav_view)
+
+        navController.navigate(destinationFragmentId)
+        bottomNavView.selectedItemId = destinationFragmentId
+    }
+
+    private fun isCardDataProvided(hasData: Boolean) {
+        binding.apply {
+            // Default Component :
+            profileImage.visibility = if (hasData) View.VISIBLE else View.GONE
+            profileName.visibility = if (hasData) View.VISIBLE else View.GONE
+            conditionStatus.visibility = if (hasData) View.VISIBLE else View.GONE
+            conditionResult.visibility = if (hasData) View.VISIBLE else View.GONE
+            profileMessage.visibility = if (hasData) View.VISIBLE else View.GONE
+            profileDate.visibility = if (hasData) View.VISIBLE else View.GONE
+
+            // Error Component :
+            noDataCard.visibility = if (hasData) View.GONE else View.VISIBLE
+            noDataMessageCard.visibility = if (hasData) View.GONE else View.VISIBLE
+            buttonCard.visibility = if (hasData) View.GONE else View.VISIBLE
+        }
     }
 }

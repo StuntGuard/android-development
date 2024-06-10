@@ -43,6 +43,7 @@ class MainActivity : AppCompatActivity() {
 
                 // Set Authorization Token as Arguments/bundle(Safe args) to send it to all other Fragment :
                 val bundle = Bundle().apply {
+                    putString("userName", user.name)
                     putString("homeToken", "Bearer ${user.token}")
                     putString("analyzeToken", "Bearer ${user.token}")
                     putString("missionToken", "Bearer ${user.token}")

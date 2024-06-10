@@ -28,4 +28,6 @@
     <string name="no_data_message">No Data</string>
     <string name="submit">Submit</string>
     <string name="recommendation_title">Recommendation</string>
+    <string name="choose_your_child">Choose Your Child</string>
+    <string name="go_here">Go Here</string>
 </resources>
