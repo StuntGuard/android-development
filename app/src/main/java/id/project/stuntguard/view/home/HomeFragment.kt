@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -15,7 +14,6 @@ import com.bumptech.glide.Glide
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import id.project.stuntguard.R
 import id.project.stuntguard.data.model.ChildModel
-import id.project.stuntguard.data.remote.response.DataMission
 import id.project.stuntguard.data.remote.response.GetAllChildResponse
 import id.project.stuntguard.databinding.FragmentHomeBinding
 import id.project.stuntguard.utils.adapters.mission.MissionListAdapter
@@ -24,8 +22,6 @@ import id.project.stuntguard.utils.helper.formatDate
 import id.project.stuntguard.utils.helper.setResultTextColor
 import id.project.stuntguard.view.analyze.AddChildActivity
 import id.project.stuntguard.view.analyze.AnalyzeResultActivity
-import id.project.stuntguard.view.mission.AddMissionActivity
-import id.project.stuntguard.view.mission.MissionFragment
 
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
@@ -132,7 +128,7 @@ class HomeFragment : Fragment() {
 
                     if (response.data.isEmpty()) {
                         isCardDataProvided(false)
-                        noDataMessageCard.text = "Try to Analyze Your Child"
+                        noDataMessageCard.text = getString(R.string.try_to_analyze_your_child)
                         buttonCard.setOnClickListener {
                             navigateToOtherFragment(R.id.navigation_analyze)
                         }
@@ -169,9 +165,16 @@ class HomeFragment : Fragment() {
 
                         // Action when CardView get clicked :
                         childCardView.setOnClickListener {
-                            val intentToAnalyzeResult = Intent(requireActivity(), AnalyzeResultActivity::class.java)
-                            intentToAnalyzeResult.putExtra(AnalyzeResultActivity.EXTRA_TOKEN, authToken)
-                            intentToAnalyzeResult.putExtra(AnalyzeResultActivity.EXTRA_ID_PREDICT, response.data[0].id)
+                            val intentToAnalyzeResult =
+                                Intent(requireActivity(), AnalyzeResultActivity::class.java)
+                            intentToAnalyzeResult.putExtra(
+                                AnalyzeResultActivity.EXTRA_TOKEN,
+                                authToken
+                            )
+                            intentToAnalyzeResult.putExtra(
+                                AnalyzeResultActivity.EXTRA_ID_PREDICT,
+                                response.data[0].id
+                            )
                             startActivity(intentToAnalyzeResult)
                         }
                     }
@@ -179,7 +182,7 @@ class HomeFragment : Fragment() {
 
             } else {
                 isCardDataProvided(false)
-                noDataMessageCard.text = "Please Add Your New Child Data"
+                noDataMessageCard.text = getString(R.string.please_add_your_new_child_data)
                 buttonCard.setOnClickListener {
                     val intentToAddNewChild =
                         Intent(requireActivity(), AddChildActivity::class.java)

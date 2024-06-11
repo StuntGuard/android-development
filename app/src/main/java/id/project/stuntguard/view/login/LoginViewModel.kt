@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
-import id.project.stuntguard.data.preferences.UserModel
+import id.project.stuntguard.data.model.UserModel
 import id.project.stuntguard.data.remote.response.SignInResponse
 import id.project.stuntguard.data.remote.response.SignUpResponse
 import id.project.stuntguard.data.repository.Repository

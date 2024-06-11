@@ -3,7 +3,6 @@ package id.project.stuntguard.view.history
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
@@ -58,8 +57,8 @@ class DetailHistoryListActivity : AppCompatActivity() {
 
             viewModel.getChildPredictHistoryResponse.observe(this@DetailHistoryListActivity) { response ->
                 if (response.data.isEmpty()) {
-                    Log.e("didalam viewmodel observe", "POPOPOPOPO")
                     showErrorMessage(true)
+
                 } else {
                     showErrorMessage(false)
                     adapter.submitList(response.data)
@@ -91,7 +90,6 @@ class DetailHistoryListActivity : AppCompatActivity() {
     }
 
     private fun showErrorMessage(isError: Boolean) {
-        Log.e("didalam showErrorMessage", "WOIIIIIIII")
         binding.noDataMessage.visibility = if (isError) View.VISIBLE else View.GONE
         binding.rvDetailHistory.visibility = if (isError) View.GONE else View.VISIBLE
     }

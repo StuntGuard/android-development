@@ -1,33 +1,64 @@
 <resources>
+    <!-- General -->
     <string name="app_name">StuntGuard</string>
     <string name="home">Home</string>
     <string name="history">History</string>
     <string name="analyze">Analyze</string>
     <string name="mission">Mission</string>
-
-    <string-array name="gender">
-        <item>laki-laki</item>
-        <item>perempuan</item>
-    </string-array>
-
     <string name="app_motto">Guard Children Nutrition</string>
+
+    <!-- OnBoarding -->
     <string name="onboarding_title">Prevent Stunting\nOptomize Child Growth</string>
     <string name="onboarding_message">Monitor your child\'s development and get early stunting prevention solutions.</string>
     <string name="continue_with_email">Continue with Email</string>
+
+    <!-- Sign In and Sign Up -->
+    <string name="sign_in">Sign In</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="name">Name</string>
+    <string name="email">Email</string>
     <string name="email_hint">Your Email</string>
     <string name="email_error_message">Invalid Email Address</string>
+    <string name="password">Password</string>
     <string name="password_hint">Your Password</string>
     <string name="password_error_message">Password must not be less than 8 character</string>
-    <string name="sign_in">Sign In</string>
-    <string name="email">Email</string>
-    <string name="password">Password</string>
-    <string name="sign_up">Sign Up</string>
     <string name="already_have_an_account">Already have an account?</string>
-    <string name="name">Name</string>
+
+    <!-- Home Section -->
+    <string name="welcome_back">Welcome Back</string>
     <string name="profile_message">Child Growth</string>
     <string name="no_data_message">No Data</string>
     <string name="submit">Submit</string>
     <string name="recommendation_title">Recommendation</string>
     <string name="choose_your_child">Choose Your Child</string>
     <string name="go_here">Go Here</string>
+    <string name="please_add_your_new_child_data">Please Add Your New Child Data</string>
+    <string name="try_to_analyze_your_child">Try to Analyze Your Child</string>
+    <string name="your_activity_with_child">Your Activity with Child</string>
+    <string name="see_all">See All</string>
+
+    <!-- Analyze Section, Add New Child and Analyze Result Screen -->
+    <string name="add_child">Add Child</string>
+    <string name="age">Age</string>
+    <string name="height">Height</string>
+    <string name="stunting_analyze">Stunting Analyze</string>
+    <string name="child_name">Child Name</string>
+    <string name="child_gender">Child Gender</string>
+    <string name="choose_gender">Choose Gender</string>
+    <string name="upload_photo">Upload Photo</string>
+    <string name="analyze_results">Analyze Results</string>
+
+    <string-array name="gender">
+        <item>laki-laki</item>
+        <item>perempuan</item>
+    </string-array>
+
+    <!-- Mission Section and Add New Mission -->
+    <string name="try_to_add_new_mission">Try to add new Mission</string>
+    <string name="mission_title">Mission Title</string>
+    <string name="mission_description">Mission Description</string>
+    <string name="add_mission">Add Mission</string>
+
+    <!-- History Section and Detail History -->
+    <string name="your_child_history">Your Child History</string>
 </resources>

@@ -20,6 +20,7 @@ class SignupActivity : AppCompatActivity() {
     private val viewModel by viewModels<SignupViewModel> {
         ViewModelFactory.getInstance(this)
     }
+    private val customAlertDialog = CustomAlertDialog(this@SignupActivity)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,35 +60,36 @@ class SignupActivity : AppCompatActivity() {
             finish()
         }
 
-        viewModel.isLoading.observe(this) {
+        viewModel.isLoading.observe(this@SignupActivity) {
             showLoading(it)
         }
 
-        viewModel.signUpResponse.observe(this) { response ->
-            val customAlertDialog = CustomAlertDialog(this)
-            customAlertDialog.create(
-                title = "Success",
-                message = response.message
-            ) {
-                val intentToSignIn = Intent(this@SignupActivity, LoginActivity::class.java)
-                startActivity(intentToSignIn)
-                finish()
+        viewModel.signUpResponse.observe(this@SignupActivity) { response ->
+            customAlertDialog.apply {
+                create(
+                    title = "Success",
+                    message = response.message
+                ) {
+                    val intentToSignIn = Intent(this@SignupActivity, LoginActivity::class.java)
+                    startActivity(intentToSignIn)
+                    finish()
+                }
             }
-            customAlertDialog.show()
         }
 
-        viewModel.errorResponse.observe(this) { errorMessage ->
-            val customAlertDialog = CustomAlertDialog(this)
-            customAlertDialog.create(
-                title = "Invalid",
-                message = errorMessage.toString()
-            ) {
-                /*
-                    onPositiveButtonClick :
-                    ~ Do Nothing ~
-                */
+        viewModel.errorResponse.observe(this@SignupActivity) { errorMessage ->
+            customAlertDialog.apply {
+                create(
+                    title = "Invalid",
+                    message = errorMessage.toString()
+                ) {
+                    /*
+                        onPositiveButtonClick :
+                        ~ Do Nothing ~
+                    */
+                }
+                show()
             }
-            customAlertDialog.show()
         }
     }
 

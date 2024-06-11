@@ -6,13 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import id.project.stuntguard.R
 import id.project.stuntguard.data.model.ChildModel
 import id.project.stuntguard.data.remote.response.GetAllChildResponse
 import id.project.stuntguard.databinding.FragmentAnalyzeBinding
+import id.project.stuntguard.utils.component.CustomAlertDialog
 import id.project.stuntguard.utils.helper.ViewModelFactory
 
 class AnalyzeFragment : Fragment() {
@@ -21,6 +21,7 @@ class AnalyzeFragment : Fragment() {
     private val viewModel by viewModels<AnalyzeViewModel> {
         ViewModelFactory.getInstance(requireActivity())
     }
+    private lateinit var customAlertDialog: CustomAlertDialog
     private var listChild = arrayListOf<ChildModel>()
     private var listChildName = arrayListOf<String>()
     private var idPredictLog = 0
@@ -36,7 +37,9 @@ class AnalyzeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         val authToken = arguments?.getString("analyzeToken").toString()
+        customAlertDialog = CustomAlertDialog(requireActivity())
 
         viewModel.getAllChild(authToken = authToken)
         viewModel.getAllChildResponse.observe(viewLifecycleOwner) { response ->
@@ -132,16 +135,15 @@ class AnalyzeFragment : Fragment() {
             }
 
         } else {
-            AlertDialog.Builder(requireActivity()).apply {
-                setTitle("Invalid")
-                setMessage("Make Sure the Input Correct!!\n\n\t[ Please choose a child, Age > 0 \n\tand Height > 0 ]")
-                setPositiveButton("Ok") { _, _ ->
+            customAlertDialog.apply {
+                create(
+                    title = "Invalid",
+                    message = "Make Sure the Input Correct!!\n\n\t[ Please choose a child, Age > 0 \n\tand Height > 0 ]"
+                ) {
                     // Do Nothing
                 }
-                create()
                 show()
             }
-            return
         }
     }
 

@@ -129,7 +129,7 @@ class MissionFragment : Fragment() {
                 viewModel.getMissionResponse.observe(viewLifecycleOwner) { response ->
                     if (response.data.isEmpty()) {
                         showData(false)
-                        noDataSubMessage.text = "Try to add new Mission"
+                        noDataSubMessage.text = getString(R.string.try_to_add_new_mission)
                         noDataButton.setOnClickListener {
                             val intentToAddMission =
                                 Intent(requireActivity(), AddMissionActivity::class.java)
@@ -153,7 +153,7 @@ class MissionFragment : Fragment() {
 
             } else {
                 showData(false)
-                noDataSubMessage.text = "Please add new Child Data"
+                noDataSubMessage.text = getString(R.string.please_add_your_new_child_data)
                 noDataButton.setOnClickListener {
                     val intentToAddChild = Intent(requireActivity(), AddChildActivity::class.java)
                     intentToAddChild.putExtra(AddChildActivity.EXTRA_TOKEN, authToken)

@@ -29,7 +29,7 @@
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="@id/rv_mission" />
+        app:layout_constraintTop_toBottomOf="@id/your_activity" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelineHorizontal"
@@ -80,7 +80,7 @@
         android:id="@+id/welcome_message"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Welcome Back"
+        android:text="@string/welcome_back"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="@id/guidelineVertical"
         app:layout_constraintStart_toStartOf="parent"
@@ -126,7 +126,7 @@
             android:background="@color/medium_grey"
             android:inputType="none"
             android:padding="4dp"
-            android:text="Choose Your Child"
+            android:text="@string/choose_your_child"
             android:textColor="@color/white" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -215,7 +215,7 @@
                     android:layout_marginStart="12dp"
                     android:textSize="18sp"
                     android:textStyle="bold"
-                    tools:text="Mukhesh obral" />
+                    tools:text="Jenie Powder" />
 
                 <TextView
                     android:id="@+id/condition_status"
@@ -260,7 +260,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="Your Activity with Child"
+        android:text="@string/your_activity_with_child"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@id/guidelineVertical"
@@ -272,7 +272,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="See All"
+        android:text="@string/see_all"
         android:textColor="@color/soft_yellow"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"

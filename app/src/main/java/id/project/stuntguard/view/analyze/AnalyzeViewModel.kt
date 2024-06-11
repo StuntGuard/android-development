@@ -126,7 +126,7 @@ class AnalyzeViewModel(private val repository: Repository) : ViewModel() {
                 _getPredictResultResponse.value = response
 
             } catch (e: HttpException) {
-                // TODO
+                // Response will always be success
             }
             _isLoading.value = false
         }

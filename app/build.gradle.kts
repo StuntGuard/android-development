@@ -42,14 +42,13 @@ android {
 
 dependencies {
     // ImagePicker(Camera and Gallery) :
-    implementation ("com.github.dhaval2404:imagepicker:2.1")
+    implementation("com.github.dhaval2404:imagepicker:2.1")
 
     // Datastore :
     implementation("androidx.datastore:datastore-preferences:1.1.1")
 
     // Glide (Online Image Loader) :
     implementation("com.github.bumptech.glide:glide:4.16.0")
-    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
 
     // Retrofit (Network) :
     implementation("com.squareup.retrofit2:retrofit:2.11.0")

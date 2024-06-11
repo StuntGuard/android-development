@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.github.dhaval2404.imagepicker.ImagePicker
 import id.project.stuntguard.R
 import id.project.stuntguard.databinding.ActivityAddChildBinding
+import id.project.stuntguard.utils.component.CustomAlertDialog
 import id.project.stuntguard.utils.helper.ViewModelFactory
 
 class AddChildActivity : AppCompatActivity() {
@@ -25,6 +26,7 @@ class AddChildActivity : AppCompatActivity() {
     private val viewModel by viewModels<AnalyzeViewModel> {
         ViewModelFactory.getInstance(this)
     }
+    private val customAlertDialog = CustomAlertDialog(this@AddChildActivity)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,25 +66,23 @@ class AddChildActivity : AppCompatActivity() {
         }
 
         viewModel.addNewChildResponse.observe(this@AddChildActivity) { response ->
-            AlertDialog.Builder(this).apply {
-                setTitle("Success")
-                setMessage(response.message)
-                setPositiveButton("Ok") { _, _ ->
-                    finish()
-                }
-                create()
-                show()
+            customAlertDialog.create(
+                title = response.status,
+                message = response.message
+            ) {
+                finish()
             }
+            customAlertDialog.show()
         }
 
         viewModel.errorResponse.observe(this@AddChildActivity) { errorMessage ->
-            AlertDialog.Builder(this).apply {
-                setTitle("Invalid")
-                setMessage(errorMessage)
-                setPositiveButton("Ok") { _, _ ->
+            customAlertDialog.apply {
+                create(
+                    title = "Invalid",
+                    message = errorMessage.toString()
+                ) {
                     // Do Nothing
                 }
-                create()
                 show()
             }
         }
@@ -139,13 +139,13 @@ class AddChildActivity : AppCompatActivity() {
                 image = uri,
                 gender = gender
             )
-        } ?: AlertDialog.Builder(this@AddChildActivity).apply {
-            setTitle("Invalid")
-            setMessage("No Media Selected")
-            setPositiveButton("Ok") { _, _ ->
+        } ?: customAlertDialog.apply {
+            create(
+                title = "Invalid",
+                message = "No Media Selected"
+            ) {
                 // Do Nothing
             }
-            create()
             show()
         }
     }

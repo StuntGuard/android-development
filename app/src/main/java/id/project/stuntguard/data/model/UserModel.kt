@@ -1,4 +1,4 @@
-package id.project.stuntguard.data.preferences
+package id.project.stuntguard.data.model
 
 data class UserModel(
     val name: String,
