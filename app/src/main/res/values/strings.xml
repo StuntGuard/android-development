@@ -8,9 +8,15 @@
     <string name="app_motto">Guard Children Nutrition</string>
 
     <!-- OnBoarding -->
-    <string name="onboarding_title">Prevent Stunting\nOptomize Child Growth</string>
-    <string name="onboarding_message">Monitor your child\'s development and get early stunting prevention solutions.</string>
-    <string name="continue_with_email">Continue with Email</string>
+    <string name="next">Next</string>
+    <string name="skip">Skip</string>
+    <string name="get_started">Get Started</string>
+    <string name="onboarding_title_1">Monitor Your Child\'s Growth</string>
+    <string name="onboarding_message_1">Stay informed about your child\'s development with accurate and timely growth assessments.</string>
+    <string name="onboarding_title_2">Identify Stunting Early</string>
+    <string name="onboarding_message_2">Get personalized recommendations and take proactive steps for their well-being.</string>
+    <string name="onboarding_title_3">Support at Your Fingertips</string>
+    <string name="onboarding_message_3">Access a wealth of information and practical tips to help you care for your child\'s growth.</string>
 
     <!-- Sign In and Sign Up -->
     <string name="sign_in">Sign In</string>

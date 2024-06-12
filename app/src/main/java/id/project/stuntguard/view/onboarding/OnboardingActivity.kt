@@ -2,11 +2,10 @@ package id.project.stuntguard.view.onboarding
 
 import android.content.Intent
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.WindowInsets
 import android.view.WindowManager
-import id.project.stuntguard.R
+import androidx.appcompat.app.AppCompatActivity
 import id.project.stuntguard.databinding.ActivityOnboardingBinding
 import id.project.stuntguard.view.login.LoginActivity
 
@@ -32,7 +31,7 @@ class OnboardingActivity : AppCompatActivity() {
             )
         }
 
-        binding.continueEmailButton.setOnClickListener {
+        binding.getStartedButton.setOnClickListener {
             val intentToLogin = Intent(this, LoginActivity::class.java)
             startActivity(intentToLogin)
             finish()
