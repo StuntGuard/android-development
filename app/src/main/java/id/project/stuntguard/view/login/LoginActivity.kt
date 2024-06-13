@@ -14,6 +14,7 @@ import id.project.stuntguard.databinding.ActivityLoginBinding
 import id.project.stuntguard.utils.component.CustomAlertDialog
 import id.project.stuntguard.utils.helper.ViewModelFactory
 import id.project.stuntguard.view.main.MainActivity
+import id.project.stuntguard.view.reset.CheckEmailActivity
 import id.project.stuntguard.view.signup.SignupActivity
 
 class LoginActivity : AppCompatActivity() {
@@ -46,16 +47,23 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun setupAction() {
-        binding.signInButton.setOnClickListener {
-            val email = binding.emailEditText.text.toString().trim()
-            val password = binding.passwordEditText.text.toString().trim()
+        binding.apply {
+            signInButton.setOnClickListener {
+                val email = binding.emailEditText.text.toString().trim()
+                val password = binding.passwordEditText.text.toString().trim()
 
-            viewModel.signIn(email = email, password = password)
-        }
+                viewModel.signIn(email = email, password = password)
+            }
 
-        binding.signUpClickable.setOnClickListener {
-            val intentToSignUp = Intent(this@LoginActivity, SignupActivity::class.java)
-            startActivity(intentToSignUp)
+            signUpClickable.setOnClickListener {
+                val intentToSignUp = Intent(this@LoginActivity, SignupActivity::class.java)
+                startActivity(intentToSignUp)
+            }
+
+            forgotPassword.setOnClickListener {
+                val intentToCheckEmail = Intent(this@LoginActivity, CheckEmailActivity::class.java)
+                startActivity(intentToCheckEmail)
+            }
         }
 
         viewModel.isLoading.observe(this) {

@@ -103,3 +103,24 @@ interface ApiService {
         @Path("idMission") idMission: Int
     ): SignUpResponse
 }
+
+interface ResetPasswordApiService {
+    @FormUrlEncoded
+    @POST("reset-password")
+    suspend fun emailChecking(
+        @Field("email") email: String
+    ) : SignUpResponse
+
+    @FormUrlEncoded
+    @POST("reset-password/verify")
+    suspend fun verifyEmail(
+        @Field("token") token: String
+    ) : SignUpResponse
+
+    @FormUrlEncoded
+    @POST("reset-password/update")
+    suspend fun updatePassword(
+        @Field("token") token: String,
+        @Field("password") password: String
+    ) : SignUpResponse
+}

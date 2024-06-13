@@ -18,7 +18,7 @@
     <string name="onboarding_title_3">Support at Your Fingertips</string>
     <string name="onboarding_message_3">Access a wealth of information and practical tips to help you care for your child\'s growth.</string>
 
-    <!-- Sign In and Sign Up -->
+    <!-- Sign In, Sign Up and Forgot Password -->
     <string name="sign_in">Sign In</string>
     <string name="sign_up">Sign Up</string>
     <string name="name">Name</string>
@@ -28,7 +28,16 @@
     <string name="password">Password</string>
     <string name="password_hint">Your Password</string>
     <string name="password_error_message">Password must not be less than 8 character</string>
+    <string name="dont_have_any_account_yet">Don\'t have any account yet?</string>
     <string name="already_have_an_account">Already have an account?</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="check_email">Check Email</string>
+    <string name="verify_code">Verify Code</string>
+    <string name="code">Code</string>
+    <string name="verification">Verification</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="new_password">New Password</string>
+    <string name="confirm_password">Confirm Password</string>
 
     <!-- Home Section -->
     <string name="welcome_back">Welcome Back</string>
@@ -67,4 +76,5 @@
 
     <!-- History Section and Detail History -->
     <string name="your_child_history">Your Child History</string>
+    <string name="resend_code">Resend Code?</string>
 </resources>

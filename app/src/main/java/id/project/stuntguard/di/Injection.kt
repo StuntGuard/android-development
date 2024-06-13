@@ -9,7 +9,8 @@ import id.project.stuntguard.data.repository.Repository
 object Injection {
     fun provideRepository(context: Context): Repository {
         val pref = UserPreferences.getInstance(context.dataStore)
-        val apiService = ApiConfig.getApiService()
-        return Repository.getInstance(pref, apiService)
+        val mainApiService = ApiConfig.getApiService()
+        val resetPasswordApiService = ApiConfig.getResetPasswordApiService()
+        return Repository.getInstance(pref, mainApiService, resetPasswordApiService)
     }
 }
