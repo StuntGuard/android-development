@@ -1,4 +1,4 @@
-package id.project.stuntguard.view.reset
+package id.project.stuntguard.view.verify
 
 import android.content.Intent
 import android.os.Build
@@ -14,7 +14,7 @@ import id.project.stuntguard.view.login.LoginActivity
 
 class ResetPasswordActivity : AppCompatActivity() {
     private lateinit var binding: ActivityResetPasswordBinding
-    private val viewModel by viewModels<ResetViewModel> {
+    private val viewModel by viewModels<VerifyViewModel> {
         ViewModelFactory.getInstance(this)
     }
     private val customAlertDialog = CustomAlertDialog(this)

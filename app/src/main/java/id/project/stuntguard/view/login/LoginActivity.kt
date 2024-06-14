@@ -14,14 +14,15 @@ import id.project.stuntguard.databinding.ActivityLoginBinding
 import id.project.stuntguard.utils.component.CustomAlertDialog
 import id.project.stuntguard.utils.helper.ViewModelFactory
 import id.project.stuntguard.view.main.MainActivity
-import id.project.stuntguard.view.reset.CheckEmailActivity
 import id.project.stuntguard.view.signup.SignupActivity
+import id.project.stuntguard.view.verify.CheckEmailActivity
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
     private val viewModel by viewModels<LoginViewModel> {
         ViewModelFactory.getInstance(this)
     }
+    private val customAlertDialog = CustomAlertDialog(this@LoginActivity)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,30 +72,29 @@ class LoginActivity : AppCompatActivity() {
         }
 
         viewModel.signInResponse.observe(this) { response ->
-            val customAlertDialog = CustomAlertDialog(this)
-            customAlertDialog.create(
-                title = "Welcome!",
-                message = "Hi, ${response.name}"
-            ) {
-                val intentToMain = Intent(this@LoginActivity, MainActivity::class.java)
-                startActivity(intentToMain)
-                finish()
+            customAlertDialog.apply {
+                create(
+                    title = "Welcome!",
+                    message = "Hi, ${response.name}"
+                ) {
+                    val intentToMain = Intent(this@LoginActivity, MainActivity::class.java)
+                    startActivity(intentToMain)
+                    finish()
+                }
+                show()
             }
-            customAlertDialog.show()
         }
 
         viewModel.errorResponse.observe(this) { errorMessage ->
-            val customAlertDialog = CustomAlertDialog(this)
-            customAlertDialog.create(
-                title = "Invalid",
-                message = errorMessage.toString()
-            ) {
-                /*
-                    onPositiveButtonClick Function :
-                    ~ Do Nothing ~
-                */
+            customAlertDialog.apply {
+                create(
+                    title = "Invalid",
+                    message = errorMessage.toString()
+                ) {
+                    // Do Nothing
+                }
+                show()
             }
-            customAlertDialog.show()
         }
     }
 
@@ -117,6 +117,8 @@ class LoginActivity : AppCompatActivity() {
             ObjectAnimator.ofFloat(binding.signInButton, View.ALPHA, 1f).setDuration(100)
         val alreadyHaveAcc =
             ObjectAnimator.ofFloat(binding.alreadyHaveAccount, View.ALPHA, 1f).setDuration(100)
+        val forgotPassword =
+            ObjectAnimator.ofFloat(binding.forgotPassword, View.ALPHA, 1f).setDuration(100)
         val signUpButton =
             ObjectAnimator.ofFloat(binding.signUpClickable, View.ALPHA, 1f).setDuration(100)
 
@@ -134,6 +136,7 @@ class LoginActivity : AppCompatActivity() {
                 emailInputField,
                 password,
                 passwordInputField,
+                forgotPassword,
                 signInButton,
                 alreadyAndSignUpAnimation
             )

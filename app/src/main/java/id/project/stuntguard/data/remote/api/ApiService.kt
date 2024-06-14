@@ -104,23 +104,35 @@ interface ApiService {
     ): SignUpResponse
 }
 
-interface ResetPasswordApiService {
+interface EmailApiService {
+    @FormUrlEncoded
+    @POST("checkEmail")
+    suspend fun newEmailCheck(
+        @Field("email") email: String
+    ): SignUpResponse
+
+    @FormUrlEncoded
+    @POST("checkEmail/verify")
+    suspend fun verifyNewEmail(
+        @Field("token") token: String
+    ): SignUpResponse
+
     @FormUrlEncoded
     @POST("reset-password")
-    suspend fun emailChecking(
+    suspend fun emailCheck(
         @Field("email") email: String
-    ) : SignUpResponse
+    ): SignUpResponse
 
     @FormUrlEncoded
     @POST("reset-password/verify")
     suspend fun verifyEmail(
         @Field("token") token: String
-    ) : SignUpResponse
+    ): SignUpResponse
 
     @FormUrlEncoded
     @POST("reset-password/update")
     suspend fun updatePassword(
         @Field("token") token: String,
         @Field("password") password: String
-    ) : SignUpResponse
+    ): SignUpResponse
 }

@@ -5,6 +5,7 @@ import android.animation.ObjectAnimator
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Patterns
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
@@ -14,10 +15,12 @@ import id.project.stuntguard.databinding.ActivitySignupBinding
 import id.project.stuntguard.utils.component.CustomAlertDialog
 import id.project.stuntguard.utils.helper.ViewModelFactory
 import id.project.stuntguard.view.login.LoginActivity
+import id.project.stuntguard.view.verify.VerifyCodeActivity
+import id.project.stuntguard.view.verify.VerifyViewModel
 
 class SignupActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignupBinding
-    private val viewModel by viewModels<SignupViewModel> {
+    private val viewModel by viewModels<VerifyViewModel> {
         ViewModelFactory.getInstance(this)
     }
     private val customAlertDialog = CustomAlertDialog(this@SignupActivity)
@@ -43,6 +46,22 @@ class SignupActivity : AppCompatActivity() {
             )
         }
         supportActionBar?.hide()
+
+        viewModel.isLoading.observe(this@SignupActivity) {
+            showLoading(it)
+        }
+
+        viewModel.errorResponse.observe(this@SignupActivity) { response ->
+            customAlertDialog.apply {
+                create(
+                    title = "Invalid",
+                    message = response.message
+                ) {
+                    // Do Nothing
+                }
+                show()
+            }
+        }
     }
 
     private fun setupAction() {
@@ -51,45 +70,76 @@ class SignupActivity : AppCompatActivity() {
             val email = binding.emailEditText.text.toString().trim()
             val password = binding.passwordEditText.text.toString().trim()
 
-            viewModel.signUp(name = name, email = email, password = password)
+            val hasUpperCase = Regex(".*[A-Z].*")
+            val hasSymbol = Regex(".*[!@#\$%^&*(),.?\":{}|<>].*")
+            val hasNumber = Regex(".*[0-9].*")
+
+            if (name.isEmpty() || email.isEmpty() || password.isEmpty()) {
+                customAlertDialog.apply {
+                    create(
+                        title = "Invalid",
+                        message = "Name, Email or Password can't be empty"
+                    ) {
+                        // Do Nothing
+                    }
+                    show()
+                }
+
+            } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                customAlertDialog.apply {
+                    create(
+                        title = "Invalid",
+                        message = "Invalid Email Address"
+                    ) {
+                        // Do Nothing
+                    }
+                    show()
+                }
+
+            } else if (
+                password.length < 8 ||
+                !hasUpperCase.containsMatchIn(password) ||
+                !hasSymbol.containsMatchIn(password) ||
+                !hasNumber.containsMatchIn(password)
+            ) {
+                customAlertDialog.apply {
+                    create(
+                        title = "Invalid",
+                        message = "Password must have at least 8 character, has Capitalize, Symbol and number"
+                    ) {
+                        // Do Nothing
+                    }
+                    show()
+                }
+
+            } else {
+                viewModel.newEmailCheck(email = email)
+
+                viewModel.newEmailCheckResponse.observe(this@SignupActivity) { response ->
+                    customAlertDialog.apply {
+                        create(
+                            title = response.status,
+                            message = "${response.message} to [ $email ]"
+                        ) {
+                            val intentToVerify =
+                                Intent(this@SignupActivity, VerifyCodeActivity::class.java)
+                            intentToVerify.putExtra(VerifyCodeActivity.EXTRA_IDENTIFIER, "New")
+                            intentToVerify.putExtra(VerifyCodeActivity.EXTRA_EMAIL, email)
+                            intentToVerify.putExtra(VerifyCodeActivity.EXTRA_NAME, name)
+                            intentToVerify.putExtra(VerifyCodeActivity.EXTRA_PASSWORD, password)
+                            startActivity(intentToVerify)
+                            finish()
+                        }
+                        show()
+                    }
+                }
+            }
         }
 
         binding.signInClickable.setOnClickListener {
             val intentToSignIn = Intent(this@SignupActivity, LoginActivity::class.java)
             startActivity(intentToSignIn)
             finish()
-        }
-
-        viewModel.isLoading.observe(this@SignupActivity) {
-            showLoading(it)
-        }
-
-        viewModel.signUpResponse.observe(this@SignupActivity) { response ->
-            customAlertDialog.apply {
-                create(
-                    title = "Success",
-                    message = response.message
-                ) {
-                    val intentToSignIn = Intent(this@SignupActivity, LoginActivity::class.java)
-                    startActivity(intentToSignIn)
-                    finish()
-                }
-            }
-        }
-
-        viewModel.errorResponse.observe(this@SignupActivity) { errorMessage ->
-            customAlertDialog.apply {
-                create(
-                    title = "Invalid",
-                    message = errorMessage.toString()
-                ) {
-                    /*
-                        onPositiveButtonClick :
-                        ~ Do Nothing ~
-                    */
-                }
-                show()
-            }
         }
     }
 

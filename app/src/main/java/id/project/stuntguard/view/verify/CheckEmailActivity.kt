@@ -1,9 +1,8 @@
-package id.project.stuntguard.view.reset
+package id.project.stuntguard.view.verify
 
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
@@ -16,7 +15,7 @@ import id.project.stuntguard.utils.helper.ViewModelFactory
 class CheckEmailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCheckEmailBinding
     private lateinit var emailIntent: String
-    private val viewModel by viewModels<ResetViewModel> {
+    private val viewModel by viewModels<VerifyViewModel> {
         ViewModelFactory.getInstance(this)
     }
     private val customAlertDialog = CustomAlertDialog(this)
@@ -48,7 +47,9 @@ class CheckEmailActivity : AppCompatActivity() {
                     title = response.status,
                     message = response.message
                 ) {
-                    val intentToVerify = Intent(this@CheckEmailActivity, VerifyCodeActivity::class.java)
+                    val intentToVerify =
+                        Intent(this@CheckEmailActivity, VerifyCodeActivity::class.java)
+                    intentToVerify.putExtra(VerifyCodeActivity.EXTRA_IDENTIFIER, "old")
                     intentToVerify.putExtra(VerifyCodeActivity.EXTRA_EMAIL, emailIntent)
                     startActivity(intentToVerify)
                 }

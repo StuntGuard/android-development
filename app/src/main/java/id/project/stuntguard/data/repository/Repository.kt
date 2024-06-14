@@ -3,7 +3,7 @@ package id.project.stuntguard.data.repository
 import id.project.stuntguard.data.model.UserModel
 import id.project.stuntguard.data.preferences.UserPreferences
 import id.project.stuntguard.data.remote.api.ApiService
-import id.project.stuntguard.data.remote.api.ResetPasswordApiService
+import id.project.stuntguard.data.remote.api.EmailApiService
 import id.project.stuntguard.data.remote.response.GetAllChildResponse
 import id.project.stuntguard.data.remote.response.GetChildPredictHistoryResponse
 import id.project.stuntguard.data.remote.response.GetPredictResultResponse
@@ -18,7 +18,7 @@ import okhttp3.RequestBody
 class Repository private constructor(
     private val preferences: UserPreferences,
     private val mainApiService: ApiService,
-    private val resetPasswordApiService: ResetPasswordApiService
+    private val emailApiService: EmailApiService
 ) {
     // Preferences :
     suspend fun saveSession(user: UserModel) {
@@ -110,17 +110,25 @@ class Repository private constructor(
         return mainApiService.deleteMissions(token = authToken, idMission = idMission)
     }
 
-    // Reset Password Api Service :
+    // Email Api Service :
+    suspend fun newEmailCheck(email: String): SignUpResponse {
+        return emailApiService.newEmailCheck(email = email)
+    }
+
+    suspend fun verifyNewEmail(token: String): SignUpResponse {
+        return emailApiService.verifyNewEmail(token = token)
+    }
+
     suspend fun checkEmail(email: String): SignUpResponse {
-        return resetPasswordApiService.emailChecking(email = email)
+        return emailApiService.emailCheck(email = email)
     }
 
     suspend fun verifyEmail(token: String): SignUpResponse {
-        return resetPasswordApiService.verifyEmail(token = token)
+        return emailApiService.verifyEmail(token = token)
     }
 
     suspend fun updatePassword(token: String, password: String): SignUpResponse {
-        return resetPasswordApiService.updatePassword(token = token, password = password)
+        return emailApiService.updatePassword(token = token, password = password)
     }
 
     companion object {
@@ -130,10 +138,10 @@ class Repository private constructor(
         fun getInstance(
             preferences: UserPreferences,
             mainApiService: ApiService,
-            resetPasswordApiService: ResetPasswordApiService
+            emailApiService: EmailApiService
         ): Repository =
             instance ?: synchronized(this) {
-                instance ?: Repository(preferences, mainApiService, resetPasswordApiService)
+                instance ?: Repository(preferences, mainApiService, emailApiService)
             }.also { instance = it }
     }
 }

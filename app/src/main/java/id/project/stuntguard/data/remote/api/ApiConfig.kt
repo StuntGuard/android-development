@@ -28,13 +28,13 @@ object ApiConfig {
     }
 
     // Reset Password Api Service :
-    fun getResetPasswordApiService(): ResetPasswordApiService {
+    fun getEmailApiService(): EmailApiService {
         val retrofit = Retrofit.Builder()
             .baseUrl("https://email-service-i5khuj4mnq-et.a.run.app/")
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
             .build()
 
-        return retrofit.create(ResetPasswordApiService::class.java)
+        return retrofit.create(EmailApiService::class.java)
     }
 }

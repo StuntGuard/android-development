@@ -11,17 +11,13 @@ import id.project.stuntguard.view.home.HomeViewModel
 import id.project.stuntguard.view.login.LoginViewModel
 import id.project.stuntguard.view.main.MainViewModel
 import id.project.stuntguard.view.mission.MissionViewModel
-import id.project.stuntguard.view.reset.ResetViewModel
-import id.project.stuntguard.view.signup.SignupViewModel
+import id.project.stuntguard.view.verify.VerifyViewModel
 
 class ViewModelFactory(private val repository: Repository) :
     ViewModelProvider.NewInstanceFactory() {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return when {
-            modelClass.isAssignableFrom(SignupViewModel::class.java) -> {
-                SignupViewModel(repository) as T
-            }
 
             modelClass.isAssignableFrom(LoginViewModel::class.java) -> {
                 LoginViewModel(repository) as T
@@ -47,8 +43,8 @@ class ViewModelFactory(private val repository: Repository) :
                 MissionViewModel(repository) as T
             }
 
-            modelClass.isAssignableFrom(ResetViewModel::class.java) -> {
-                ResetViewModel(repository) as T
+            modelClass.isAssignableFrom(VerifyViewModel::class.java) -> {
+                VerifyViewModel(repository) as T
             }
 
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)

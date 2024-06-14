@@ -1,4 +1,4 @@
-package id.project.stuntguard.view.reset
+package id.project.stuntguard.view.verify
 
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -11,15 +11,24 @@ import id.project.stuntguard.data.repository.Repository
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 
-class ResetViewModel(private val repository: Repository) : ViewModel() {
+class VerifyViewModel(private val repository: Repository) : ViewModel() {
     private val _checkEmailResponse = MutableLiveData<SignUpResponse>()
     val checkEmailResponse: LiveData<SignUpResponse> = _checkEmailResponse
 
-    private val _verifyResponse = MutableLiveData<SignUpResponse>()
-    val verifyResponse: LiveData<SignUpResponse> = _verifyResponse
+    private val _verifyEmailResponse = MutableLiveData<SignUpResponse>()
+    val verifyEmailResponse: LiveData<SignUpResponse> = _verifyEmailResponse
 
     private val _resetPasswordResponse = MutableLiveData<SignUpResponse>()
     val resetPasswordResponse: LiveData<SignUpResponse> = _resetPasswordResponse
+
+    private val _newEmailCheckResponse = MutableLiveData<SignUpResponse>()
+    val newEmailCheckResponse: LiveData<SignUpResponse> = _newEmailCheckResponse
+
+    private val _verifyNewEmailResponse = MutableLiveData<SignUpResponse>()
+    val verifyNewEmailResponse: LiveData<SignUpResponse> = _verifyNewEmailResponse
+
+    private val _signUpResponse = MutableLiveData<SignUpResponse>()
+    val signUpResponse: LiveData<SignUpResponse> = _signUpResponse
 
     private val _errorResponse = MutableLiveData<SignUpResponse>()
     val errorResponse: LiveData<SignUpResponse> = _errorResponse
@@ -27,6 +36,8 @@ class ResetViewModel(private val repository: Repository) : ViewModel() {
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
+
+    // Reset Password Section :
     fun checkEmail(email: String) {
         viewModelScope.launch {
             _isLoading.value = true
@@ -49,7 +60,7 @@ class ResetViewModel(private val repository: Repository) : ViewModel() {
             _isLoading.value = true
             try {
                 val response = repository.verifyEmail(token = token)
-                _verifyResponse.value = response
+                _verifyEmailResponse.value = response
 
             } catch (e: HttpException) {
                 Log.e(TAG, "onFailure: ${e.message()}")
@@ -78,7 +89,56 @@ class ResetViewModel(private val repository: Repository) : ViewModel() {
         }
     }
 
+    // Sign Up Section :
+    fun verifyNewEmail(token: String) {
+        viewModelScope.launch {
+            _isLoading.value = true
+            try {
+                val response = repository.verifyNewEmail(token = token)
+                _verifyNewEmailResponse.value = response
+
+            } catch (e: HttpException) {
+                val jsonInString = e.response()?.errorBody()?.string()
+                val errorBody = Gson().fromJson(jsonInString, SignUpResponse::class.java)
+                _errorResponse.value = errorBody
+            }
+            _isLoading.value = false
+        }
+    }
+
+    fun newEmailCheck(email: String) {
+        viewModelScope.launch {
+            _isLoading.value = true
+            try {
+                val response = repository.newEmailCheck(email = email)
+                _newEmailCheckResponse.value = response
+
+            } catch (e: HttpException) {
+                val jsonInString = e.response()?.errorBody()?.string()
+                val errorBody = Gson().fromJson(jsonInString, SignUpResponse::class.java)
+                _errorResponse.value = errorBody
+            }
+            _isLoading.value = false
+        }
+    }
+
+    fun signUp(name: String, email: String, password: String) {
+        viewModelScope.launch {
+            _isLoading.value = true
+            try {
+                val response = repository.signUp(name = name, email = email, password = password)
+                _signUpResponse.value = response
+
+            } catch (e: HttpException) {
+                val jsonInString = e.response()?.errorBody()?.string()
+                val errorBody = Gson().fromJson(jsonInString, SignUpResponse::class.java)
+                _errorResponse.value = errorBody
+            }
+            _isLoading.value = false
+        }
+    }
+
     companion object {
-        private const val TAG = "ResetViewModel"
+        private const val TAG = "VerifyViewModel"
     }
 }

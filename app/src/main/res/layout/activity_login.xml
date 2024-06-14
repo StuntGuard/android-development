@@ -182,13 +182,15 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:alpha="0"
             android:gravity="end"
             android:text="@string/forgot_password"
             android:textColor="@color/soft_yellow"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@id/guidelineVertical3"
             app:layout_constraintStart_toStartOf="@id/guidelineVertical"
-            app:layout_constraintTop_toBottomOf="@id/passwordEditTextLayout" />
+            app:layout_constraintTop_toBottomOf="@id/passwordEditTextLayout"
+            tools:alpha="100" />
 
         <Button
             android:id="@+id/sign_in_button"
