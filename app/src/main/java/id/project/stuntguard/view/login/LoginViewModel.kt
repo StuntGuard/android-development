@@ -1,6 +1,5 @@
 package id.project.stuntguard.view.login
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -40,16 +39,11 @@ class LoginViewModel(private val repository: Repository) : ViewModel() {
                 saveSession(UserModel(response.name, email, response.token, true))
 
             } catch (e: HttpException) {
-                Log.e(TAG, "onFailure: ${e.message()}")
                 val jsonInString = e.response()?.errorBody()?.string()
                 val errorBody = Gson().fromJson(jsonInString, SignUpResponse::class.java)
                 _errorResponse.value = errorBody.message
             }
             _isLoading.value = false
         }
-    }
-
-    companion object {
-        private const val TAG = "LoginViewModel"
     }
 }

@@ -1,6 +1,5 @@
 package id.project.stuntguard.view.history
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -48,7 +47,7 @@ class HistoryViewModel(private val repository: Repository) : ViewModel() {
         viewModelScope.launch {
             _isLoading.value = true
             try {
-                val response = repository.deleteChild(authToken = authToken, idChild = idChild)
+                repository.deleteChild(authToken = authToken, idChild = idChild)
 
                 // to update List of child after delete operation get executed :
                 _getAllChildResponse.value = repository.getAllChild(authToken = authToken)
@@ -75,7 +74,6 @@ class HistoryViewModel(private val repository: Repository) : ViewModel() {
                 _getChildPredictHistoryResponse.value = response
 
             } catch (e: HttpException) {
-                Log.e(TAG, "onFailure: ${e.message()}")
                 val jsonInString = e.response()?.errorBody()?.string()
                 val errorBody =
                     Gson().fromJson(jsonInString, GetChildPredictHistoryResponse::class.java)
@@ -83,9 +81,5 @@ class HistoryViewModel(private val repository: Repository) : ViewModel() {
             }
             _isLoading.value = false
         }
-    }
-
-    companion object {
-        const val TAG = "HistoryViewModel"
     }
 }

@@ -2,7 +2,6 @@ package id.project.stuntguard.utils.helper
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Color
 import android.net.Uri
 import id.project.stuntguard.R
 import java.io.File
@@ -60,14 +59,14 @@ fun formatDate(inputDate: String): String {
 fun setResultTextColor(context: Context, resultPrediction: String): ArrayList<Int> {
     val predictionColor = arrayListOf<Int>()
 
-   predictionColor.apply {
-       if (resultPrediction == "Stunted" || resultPrediction == "Severely Stunted") {
-           add(context.resources.getColor(R.color.soft_red, null))
-           add(context.resources.getColor(R.color.orange, null))
-       } else {
-           add(context.resources.getColor(R.color.soft_green, null))
-           add(context.resources.getColor(R.color.soft_yellow, null))
-       }
-   }
+    predictionColor.apply {
+        if (resultPrediction == "Stunted" || resultPrediction == "Severely Stunted") {
+            add(context.resources.getColor(R.color.soft_red, null))
+            add(context.resources.getColor(R.color.orange, null))
+        } else {
+            add(context.resources.getColor(R.color.soft_green, null))
+            add(context.resources.getColor(R.color.soft_yellow, null))
+        }
+    }
     return predictionColor
 }

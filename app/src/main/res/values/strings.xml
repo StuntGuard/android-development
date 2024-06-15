@@ -54,8 +54,8 @@
 
     <!-- Analyze Section, Add New Child and Analyze Result Screen -->
     <string name="add_child">Add Child</string>
-    <string name="age">Age</string>
-    <string name="height">Height</string>
+    <string name="age">Age (Month)</string>
+    <string name="height">Height (CentiMeter)</string>
     <string name="stunting_analyze">Stunting Analyze</string>
     <string name="child_name">Child Name</string>
     <string name="child_gender">Child Gender</string>

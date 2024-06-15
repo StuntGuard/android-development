@@ -126,6 +126,7 @@ class MissionFragment : Fragment() {
 
             if (childData != null) {
                 viewModel.getMissions(authToken = authToken, idChild = childData.id)
+
                 viewModel.getMissionResponse.observe(viewLifecycleOwner) { response ->
                     if (response.data.isEmpty()) {
                         showData(false)

@@ -2,7 +2,6 @@ package id.project.stuntguard.view.analyze
 
 import android.content.Context
 import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -26,8 +25,8 @@ class AnalyzeViewModel(private val repository: Repository) : ViewModel() {
     private val _addNewChildResponse = MutableLiveData<SignUpResponse>()
     val addNewChildResponse: LiveData<SignUpResponse> = _addNewChildResponse
 
-    private val _errorResponse = MutableLiveData<String?>()
-    val errorResponse: LiveData<String?> = _errorResponse
+    private val _errorResponse = MutableLiveData<SignUpResponse>()
+    val errorResponse: LiveData<SignUpResponse> = _errorResponse
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
@@ -64,10 +63,9 @@ class AnalyzeViewModel(private val repository: Repository) : ViewModel() {
                 _addNewChildResponse.value = response
 
             } catch (e: HttpException) {
-                Log.d(TAG, "onFailure Add New Child: ${e.message()}")
                 val jsonInString = e.response()?.errorBody()?.string()
                 val errorBody = Gson().fromJson(jsonInString, SignUpResponse::class.java)
-                _errorResponse.value = errorBody.message
+                _errorResponse.value = errorBody
             }
             _isLoading.value = false
         }
@@ -108,10 +106,9 @@ class AnalyzeViewModel(private val repository: Repository) : ViewModel() {
                 _predictChildResponse.value = response
 
             } catch (e: HttpException) {
-                Log.d(TAG, "onFailure Predict Child: ${e.message()}")
                 val jsonInString = e.response()?.errorBody()?.string()
                 val errorBody = Gson().fromJson(jsonInString, SignUpResponse::class.java)
-                _errorResponse.value = errorBody.message
+                _errorResponse.value = errorBody
             }
             _isLoading.value = false
         }
@@ -130,9 +127,5 @@ class AnalyzeViewModel(private val repository: Repository) : ViewModel() {
             }
             _isLoading.value = false
         }
-    }
-
-    companion object {
-        private const val TAG = "AnalyzeViewModel"
     }
 }

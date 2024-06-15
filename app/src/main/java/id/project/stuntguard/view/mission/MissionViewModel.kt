@@ -1,6 +1,5 @@
 package id.project.stuntguard.view.mission
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -23,8 +22,8 @@ class MissionViewModel(private val repository: Repository) : ViewModel() {
     private val _getMissionResponse = MutableLiveData<MissionResponse>()
     val getMissionResponse: LiveData<MissionResponse> = _getMissionResponse
 
-    private val _errorResponse = MutableLiveData<String?>()
-    val errorResponse: LiveData<String?> = _errorResponse
+    private val _errorResponse = MutableLiveData<SignUpResponse>()
+    val errorResponse: LiveData<SignUpResponse> = _errorResponse
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
@@ -63,11 +62,10 @@ class MissionViewModel(private val repository: Repository) : ViewModel() {
                 _addMissionResponse.value = response
 
             } catch (e: HttpException) {
-                Log.d(TAG, "onFailure: ${e.message()}")
                 val jsonInString = e.response()?.errorBody()?.string()
                 val errorBody =
                     Gson().fromJson(jsonInString, SignUpResponse::class.java)
-                _errorResponse.value = errorBody.message
+                _errorResponse.value = errorBody
             }
             _isLoading.value = false
         }
@@ -110,9 +108,5 @@ class MissionViewModel(private val repository: Repository) : ViewModel() {
                 */
             }
         }
-    }
-
-    companion object {
-        private const val TAG = "MissionViewModel"
     }
 }

@@ -1,6 +1,5 @@
 package id.project.stuntguard.view.verify
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -46,7 +45,6 @@ class VerifyViewModel(private val repository: Repository) : ViewModel() {
                 _checkEmailResponse.value = response
 
             } catch (e: HttpException) {
-                Log.e(TAG, "onFailure: ${e.message()}")
                 val jsonInString = e.response()?.errorBody()?.string()
                 val errorBody = Gson().fromJson(jsonInString, SignUpResponse::class.java)
                 _errorResponse.value = errorBody
@@ -63,7 +61,6 @@ class VerifyViewModel(private val repository: Repository) : ViewModel() {
                 _verifyEmailResponse.value = response
 
             } catch (e: HttpException) {
-                Log.e(TAG, "onFailure: ${e.message()}")
                 val jsonInString = e.response()?.errorBody()?.string()
                 val errorBody = Gson().fromJson(jsonInString, SignUpResponse::class.java)
                 _errorResponse.value = errorBody
@@ -80,7 +77,6 @@ class VerifyViewModel(private val repository: Repository) : ViewModel() {
                 _resetPasswordResponse.value = response
 
             } catch (e: HttpException) {
-                Log.e(TAG, "onFailure: ${e.message()}")
                 val jsonInString = e.response()?.errorBody()?.string()
                 val errorBody = Gson().fromJson(jsonInString, SignUpResponse::class.java)
                 _errorResponse.value = errorBody
@@ -136,9 +132,5 @@ class VerifyViewModel(private val repository: Repository) : ViewModel() {
             }
             _isLoading.value = false
         }
-    }
-
-    companion object {
-        private const val TAG = "VerifyViewModel"
     }
 }

@@ -1,6 +1,5 @@
 package id.project.stuntguard.view.home
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -65,7 +64,6 @@ class HomeViewModel(private val repository: Repository) : ViewModel() {
                 _getChildPredictHistoryResponse.value = response
 
             } catch (e: HttpException) {
-                Log.e(TAG, "onFailure: ${e.message()}")
                 val jsonInString = e.response()?.errorBody()?.string()
                 val errorBody =
                     Gson().fromJson(jsonInString, GetChildPredictHistoryResponse::class.java)
@@ -113,9 +111,5 @@ class HomeViewModel(private val repository: Repository) : ViewModel() {
                 */
             }
         }
-    }
-
-    companion object {
-        private const val TAG = "HomeViewModel"
     }
 }

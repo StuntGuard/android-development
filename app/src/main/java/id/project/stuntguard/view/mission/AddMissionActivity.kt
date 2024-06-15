@@ -21,6 +21,7 @@ class AddMissionActivity : AppCompatActivity() {
     private val viewModel by viewModels<MissionViewModel> {
         viewModelFactory
     }
+    private val customAlertDialog = CustomAlertDialog(this)
     private var listChild = arrayListOf<ChildModel>()
     private var listChildName = arrayListOf<String>()
 
@@ -53,25 +54,27 @@ class AddMissionActivity : AppCompatActivity() {
         }
 
         viewModel.addMissionResponse.observe(this@AddMissionActivity) { response ->
-            val customAlertDialog = CustomAlertDialog(this@AddMissionActivity)
-            customAlertDialog.create(
-                title = response.status,
-                message = response.message
-            ) {
-                finish()
+            customAlertDialog.apply {
+                create(
+                    title = response.status,
+                    message = response.message
+                ) {
+                    finish()
+                }
+                show()
             }
-            customAlertDialog.show()
         }
 
-        viewModel.errorResponse.observe(this@AddMissionActivity) { errorMessage ->
-            val customAlertDialog = CustomAlertDialog(this@AddMissionActivity)
-            customAlertDialog.create(
-                title = "Invalid",
-                message = errorMessage.toString()
-            ) {
-
+        viewModel.errorResponse.observe(this@AddMissionActivity) { response ->
+            customAlertDialog.apply {
+                create(
+                    title = "Invalid",
+                    message = response.message
+                ) {
+                    // Do Nothing
+                }
+                show()
             }
-            customAlertDialog.show()
         }
 
         viewModel.isLoading.observe(this@AddMissionActivity) {
@@ -136,14 +139,15 @@ class AddMissionActivity : AppCompatActivity() {
             )
 
         } else {
-            val customAlertDialog = CustomAlertDialog(this@AddMissionActivity)
-            customAlertDialog.create(
-                title = "Invalid",
-                message = "No Child Selected"
-            ) {
-                // Do nothing
+            customAlertDialog.apply {
+                create(
+                    title = "Invalid",
+                    message = "No Child Selected"
+                ) {
+                    // Do nothing
+                }
+                show()
             }
-            customAlertDialog.show()
         }
     }
 

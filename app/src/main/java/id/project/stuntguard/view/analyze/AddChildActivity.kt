@@ -12,7 +12,6 @@ import android.view.WindowManager
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.github.dhaval2404.imagepicker.ImagePicker
 import id.project.stuntguard.R
@@ -26,7 +25,7 @@ class AddChildActivity : AppCompatActivity() {
     private val viewModel by viewModels<AnalyzeViewModel> {
         ViewModelFactory.getInstance(this)
     }
-    private val customAlertDialog = CustomAlertDialog(this@AddChildActivity)
+    private val customAlertDialog = CustomAlertDialog(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,20 +65,22 @@ class AddChildActivity : AppCompatActivity() {
         }
 
         viewModel.addNewChildResponse.observe(this@AddChildActivity) { response ->
-            customAlertDialog.create(
-                title = response.status,
-                message = response.message
-            ) {
-                finish()
+            customAlertDialog.apply {
+                create(
+                    title = response.status,
+                    message = response.message
+                ) {
+                    finish()
+                }
+                show()
             }
-            customAlertDialog.show()
         }
 
-        viewModel.errorResponse.observe(this@AddChildActivity) { errorMessage ->
+        viewModel.errorResponse.observe(this@AddChildActivity) { response ->
             customAlertDialog.apply {
                 create(
                     title = "Invalid",
-                    message = errorMessage.toString()
+                    message = response.message
                 ) {
                     // Do Nothing
                 }

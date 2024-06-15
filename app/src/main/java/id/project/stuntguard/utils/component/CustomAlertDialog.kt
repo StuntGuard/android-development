@@ -1,6 +1,8 @@
 package id.project.stuntguard.utils.component
 
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import androidx.appcompat.app.AlertDialog
 import id.project.stuntguard.databinding.CustomAlertDialogBinding
@@ -24,6 +26,8 @@ class CustomAlertDialog(private val context: Context) {
         alertDialog = AlertDialog.Builder(context)
             .setView(binding.root)
             .create()
+
+        alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }
 
     fun show() {
