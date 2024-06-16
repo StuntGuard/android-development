@@ -2,10 +2,10 @@
 StuntGuard is an application that dedicated to detect stunting problem on children. The application is built by Kotlin Programming Language and Android Studio as the IDE tool with implementation of Backend API and Machine Learning Model that deployed on Backend side.
 
 - ### Preview
-  <img alt="Onboarding Screen" src="screenshots/onboarding_screenshot.png" width="270"/> <img alt="Sign In Screen" src="screenshots/sign_in_screenshot.png" width="270"/> <img alt="Home Screen" src="screenshots/home_screenshot.png" width="270"/>
-  <img alt="Analyze Screen" src="screenshots/analyze_screenshot.png" width="270"/> <img alt="Analyze Result Screen" src="screenshots/analyze_result_screenshot.png" width="270"/> <img alt="Add Child Screen" src="screenshots/add_child_screenshot.png" width="270"/>
-  <img alt="Mission Screen" src="screenshots/mission_screenshot.png" width="270"/> <img alt="Add Mission Screen" src="screenshots/add_mission_screenshot.png" width="270"/> <img alt="History Screen" src="screenshots/history_screenshot.png" width="270"/>
-  <img alt="Detail History Screen" src="screenshots/detail_history_screenshot.png" width="270"/>
+  <img alt="Onboarding Screen" src="screenshots/onboarding_screenshot.png" width="250"/> <img alt="Sign In Screen" src="screenshots/sign_in_screenshot.png" width="250"/> <img alt="Home Screen" src="screenshots/home_screenshot.png" width="250"/>
+  <img alt="Analyze Screen" src="screenshots/analyze_screenshot.png" width="250"/> <img alt="Analyze Result Screen" src="screenshots/analyze_result_screenshot.png" width="250"/> <img alt="Add Child Screen" src="screenshots/add_child_screenshot.png" width="250"/>
+  <img alt="Mission Screen" src="screenshots/mission_screenshot.png" width="250"/> <img alt="Add Mission Screen" src="screenshots/add_mission_screenshot.png" width="250"/> <img alt="History Screen" src="screenshots/history_screenshot.png" width="250"/>
+  <img alt="Detail History Screen" src="screenshots/detail_history_screenshot.png" width="250"/>
 
 - ### Android Architecture
   <img alt="Android Architecture" src="screenshots/android_architecture.png" width="100%"/>
