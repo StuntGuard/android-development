@@ -25,6 +25,7 @@ class CustomAlertDialog(private val context: Context) {
         // Set AlertDialog Builder :
         alertDialog = AlertDialog.Builder(context)
             .setView(binding.root)
+            .setCancelable(false)
             .create()
 
         alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))

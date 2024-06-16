@@ -236,6 +236,7 @@ class HomeFragment : Fragment() {
     private fun setupAction() {
         binding.logout.setOnClickListener {
             viewModel.logout()
+            requireActivity().finish()
         }
         binding.seeAll.setOnClickListener {
             navigateToOtherFragment(R.id.navigation_mission)

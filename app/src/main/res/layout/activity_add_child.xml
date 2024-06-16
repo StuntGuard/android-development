@@ -21,6 +21,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.35"
             tools:visibility="visible" />
 
         <androidx.constraintlayout.widget.Guideline
@@ -106,7 +107,7 @@
             android:id="@+id/child_name_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="42dp"
             android:text="@string/child_name"
             android:textSize="18sp"
             android:textStyle="bold"
@@ -148,7 +149,7 @@
             android:id="@+id/child_age_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="24dp"
             android:text="@string/child_gender"
             android:textSize="18sp"
             android:textStyle="bold"
@@ -187,7 +188,7 @@
             android:id="@+id/upload_photo_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="24dp"
             android:text="@string/upload_photo"
             android:textSize="18sp"
             android:textStyle="bold"
@@ -209,10 +210,12 @@
             android:id="@+id/submit_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="36dp"
+            android:layout_margin="42dp"
             android:backgroundTint="@color/soft_yellow"
+            android:padding="16dp"
             android:text="@string/submit"
             android:textColor="@color/black"
+            app:cornerRadius="16dp"
             app:layout_constraintTop_toBottomOf="@id/preview_image" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

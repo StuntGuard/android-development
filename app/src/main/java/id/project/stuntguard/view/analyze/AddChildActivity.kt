@@ -95,7 +95,7 @@ class AddChildActivity : AppCompatActivity() {
         when (resultCode) {
             Activity.RESULT_OK -> {
                 currentImageUri = data?.data!!
-                showImage()
+                binding.previewImage.setImageURI(currentImageUri)
             }
 
             ImagePicker.RESULT_ERROR -> {
@@ -119,13 +119,6 @@ class AddChildActivity : AppCompatActivity() {
             )
         }
         supportActionBar?.hide()
-    }
-
-    private fun showImage() {
-        currentImageUri?.let {
-            binding.previewImage.setImageURI(it)
-            Log.d("Image URI", "showImage: $it")
-        }
     }
 
     private fun analyze(authToken: String) {

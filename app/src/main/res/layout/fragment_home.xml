@@ -37,7 +37,7 @@
         android:layout_height="0dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintGuide_percent="0.13"
+        app:layout_constraintGuide_percent="0.12"
         app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.constraintlayout.widget.Guideline
@@ -307,9 +307,11 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:paddingVertical="8dp"
         android:text="@string/see_all"
         android:textColor="@color/soft_yellow"
         android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@id/your_activity"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/guidelineVertical2"
         app:layout_constraintTop_toTopOf="@id/your_activity" />
