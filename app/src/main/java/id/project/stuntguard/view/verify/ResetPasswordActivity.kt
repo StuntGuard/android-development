@@ -56,6 +56,18 @@ class ResetPasswordActivity : AppCompatActivity() {
                 show()
             }
         }
+
+        viewModel.errorResponse.observe(this@ResetPasswordActivity) {
+            customAlertDialog.apply {
+                create(
+                    title = "Invalid",
+                    message = "Strong Password is required\n[ at least 8 character, has Capitalize, regular character, Symbol and number ]"
+                ) {
+                    // Do Nothing
+                }
+                show()
+            }
+        }
     }
 
     private fun setupAction(token: String) {
@@ -63,6 +75,7 @@ class ResetPasswordActivity : AppCompatActivity() {
             backButton.setOnClickListener {
                 finish()
             }
+
             submitButton.setOnClickListener {
                 binding.apply {
                     val newPassword = newPasswordEditText.text.toString().trim()

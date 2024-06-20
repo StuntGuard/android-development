@@ -51,11 +51,11 @@ class SignupActivity : AppCompatActivity() {
             showLoading(it)
         }
 
-        viewModel.errorResponse.observe(this@SignupActivity) { response ->
+        viewModel.errorResponse.observe(this@SignupActivity) { errorMessage ->
             customAlertDialog.apply {
                 create(
                     title = "Invalid",
-                    message = response.message
+                    message = errorMessage.toString()
                 ) {
                     // Do Nothing
                 }
@@ -71,6 +71,7 @@ class SignupActivity : AppCompatActivity() {
             val password = binding.passwordEditText.text.toString().trim()
 
             val hasUpperCase = Regex(".*[A-Z].*")
+            val hasLowerCase = Regex(".*[a-z].*")
             val hasSymbol = Regex(".*[!@#\$%^&*(),.?\":{}|<>].*")
             val hasNumber = Regex(".*[0-9].*")
 
@@ -100,12 +101,13 @@ class SignupActivity : AppCompatActivity() {
                 password.length < 8 ||
                 !hasUpperCase.containsMatchIn(password) ||
                 !hasSymbol.containsMatchIn(password) ||
-                !hasNumber.containsMatchIn(password)
+                !hasNumber.containsMatchIn(password) ||
+                !hasLowerCase.containsMatchIn(password)
             ) {
                 customAlertDialog.apply {
                     create(
                         title = "Invalid",
-                        message = "Password must have at least 8 character, has Capitalize, Symbol and number"
+                        message = "Password must have at least 8 character, has Capitalize, regular character, Symbol and number"
                     ) {
                         // Do Nothing
                     }

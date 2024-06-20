@@ -57,11 +57,11 @@ class CheckEmailActivity : AppCompatActivity() {
             }
         }
 
-        viewModel.errorResponse.observe(this@CheckEmailActivity) { response ->
+        viewModel.errorResponse.observe(this@CheckEmailActivity) { errorMessage ->
             customAlertDialog.apply {
                 create(
-                    title = response.status,
-                    message = response.message
+                    title = "Invalid",
+                    message = errorMessage.toString()
                 ) {
                     // Do Nothing
                 }

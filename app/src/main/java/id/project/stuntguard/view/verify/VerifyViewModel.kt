@@ -29,8 +29,8 @@ class VerifyViewModel(private val repository: Repository) : ViewModel() {
     private val _signUpResponse = MutableLiveData<SignUpResponse>()
     val signUpResponse: LiveData<SignUpResponse> = _signUpResponse
 
-    private val _errorResponse = MutableLiveData<SignUpResponse>()
-    val errorResponse: LiveData<SignUpResponse> = _errorResponse
+    private val _errorResponse = MutableLiveData<String?>()
+    val errorResponse: LiveData<String?> = _errorResponse
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
@@ -47,7 +47,7 @@ class VerifyViewModel(private val repository: Repository) : ViewModel() {
             } catch (e: HttpException) {
                 val jsonInString = e.response()?.errorBody()?.string()
                 val errorBody = Gson().fromJson(jsonInString, SignUpResponse::class.java)
-                _errorResponse.value = errorBody
+                _errorResponse.value = errorBody.message
             }
             _isLoading.value = false
         }
@@ -63,7 +63,7 @@ class VerifyViewModel(private val repository: Repository) : ViewModel() {
             } catch (e: HttpException) {
                 val jsonInString = e.response()?.errorBody()?.string()
                 val errorBody = Gson().fromJson(jsonInString, SignUpResponse::class.java)
-                _errorResponse.value = errorBody
+                _errorResponse.value = errorBody.message
             }
             _isLoading.value = false
         }
@@ -79,7 +79,7 @@ class VerifyViewModel(private val repository: Repository) : ViewModel() {
             } catch (e: HttpException) {
                 val jsonInString = e.response()?.errorBody()?.string()
                 val errorBody = Gson().fromJson(jsonInString, SignUpResponse::class.java)
-                _errorResponse.value = errorBody
+                _errorResponse.value = errorBody.message
             }
             _isLoading.value = false
         }
@@ -96,7 +96,7 @@ class VerifyViewModel(private val repository: Repository) : ViewModel() {
             } catch (e: HttpException) {
                 val jsonInString = e.response()?.errorBody()?.string()
                 val errorBody = Gson().fromJson(jsonInString, SignUpResponse::class.java)
-                _errorResponse.value = errorBody
+                _errorResponse.value = errorBody.message
             }
             _isLoading.value = false
         }
@@ -112,7 +112,7 @@ class VerifyViewModel(private val repository: Repository) : ViewModel() {
             } catch (e: HttpException) {
                 val jsonInString = e.response()?.errorBody()?.string()
                 val errorBody = Gson().fromJson(jsonInString, SignUpResponse::class.java)
-                _errorResponse.value = errorBody
+                _errorResponse.value = errorBody.message
             }
             _isLoading.value = false
         }
@@ -128,7 +128,7 @@ class VerifyViewModel(private val repository: Repository) : ViewModel() {
             } catch (e: HttpException) {
                 val jsonInString = e.response()?.errorBody()?.string()
                 val errorBody = Gson().fromJson(jsonInString, SignUpResponse::class.java)
-                _errorResponse.value = errorBody
+                _errorResponse.value = errorBody.message
             }
             _isLoading.value = false
         }

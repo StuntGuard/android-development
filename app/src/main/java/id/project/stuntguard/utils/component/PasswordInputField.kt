@@ -38,6 +38,7 @@ class PasswordInputField @JvmOverloads constructor(
     private fun validatePassword(password: String) {
         // Condition to consider as Valid Password (Has Uppercase,Symbol, Number and the length min 8) :
         val hasUpperCase = Regex(".*[A-Z].*")
+        val hasLowerCase = Regex(".*[a-z].*")
         val hasSymbol = Regex(".*[!@#\$%^&*(),.?\":{}|<>].*")
         val hasNumber = Regex(".*[0-9].*")
 
@@ -47,6 +48,9 @@ class PasswordInputField @JvmOverloads constructor(
             }
             !hasUpperCase.containsMatchIn(password) -> {
                 setError("Password must be contain capitalize character", null)
+            }
+            !hasLowerCase.containsMatchIn(password) -> {
+                setError("Password must be contain regular character", null)
             }
             !hasSymbol.containsMatchIn(password) -> {
                 setError("Password must be contain symbol", null)

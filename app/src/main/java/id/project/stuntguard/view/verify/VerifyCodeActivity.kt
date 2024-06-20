@@ -46,11 +46,11 @@ class VerifyCodeActivity : AppCompatActivity() {
         }
         supportActionBar?.hide()
 
-        viewModel.errorResponse.observe(this@VerifyCodeActivity) { response ->
+        viewModel.errorResponse.observe(this@VerifyCodeActivity) { errorMessage ->
             customAlertDialog.apply {
                 create(
-                    title = response.status,
-                    message = response.message
+                    title = "Invalid",
+                    message = errorMessage.toString()
                 ) {
                     // Do Nothing
                 }
@@ -89,15 +89,7 @@ class VerifyCodeActivity : AppCompatActivity() {
                     viewModel.verifyNewEmail(token = token)
 
                     viewModel.verifyNewEmailResponse.observe(this@VerifyCodeActivity) { response ->
-                        customAlertDialog.apply {
-                            create(
-                                title = response.status,
-                                message = response.message
-                            ) {
-                                viewModel.signUp(name = name, email = email, password = password)
-                            }
-                            show()
-                        }
+                        viewModel.signUp(name = name, email = email, password = password)
                     }
 
                 } else {
